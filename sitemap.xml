@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://879879.xyz/</loc></url>
+  <url><loc>https://879879.xyz/quiz.html</loc></url>
+  <url><loc>https://879879.xyz/mystic.html</loc></url>
   <url><loc>https://879879.xyz/name/emma/</loc></url>
   <url><loc>https://879879.xyz/name/olivia/</loc></url>
   <url><loc>https://879879.xyz/name/sophia/</loc></url>
@@ -501,4 +503,17 @@
   <url><loc>https://879879.xyz/name/mustafa/</loc></url>
   <url><loc>https://879879.xyz/name/nabil/</loc></url>
   <url><loc>https://879879.xyz/name/omar/</loc></url>
+  <url><loc>https://879879.xyz/phases/new-moon/</loc></url>
+  <url><loc>https://879879.xyz/phases/waxing-crescent/</loc></url>
+  <url><loc>https://879879.xyz/phases/first-quarter/</loc></url>
+  <url><loc>https://879879.xyz/phases/waxing-gibbous/</loc></url>
+  <url><loc>https://879879.xyz/phases/full-moon/</loc></url>
+  <url><loc>https://879879.xyz/phases/waning-gibbous/</loc></url>
+  <url><loc>https://879879.xyz/phases/last-quarter/</loc></url>
+  <url><loc>https://879879.xyz/phases/waning-crescent/</loc></url>
+  <url><loc>https://879879.xyz/elements/wood/</loc></url>
+  <url><loc>https://879879.xyz/elements/fire/</loc></url>
+  <url><loc>https://879879.xyz/elements/earth/</loc></url>
+  <url><loc>https://879879.xyz/elements/metal/</loc></url>
+  <url><loc>https://879879.xyz/elements/water/</loc></url>
 </urlset>

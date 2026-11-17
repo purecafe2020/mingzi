@@ -324,9 +324,78 @@ def build(site_url: str):
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
             f.write(page)
 
+    # phase & element landing pages (SEO)
+    import json as _json
+    moon_data = _json.load(open(os.path.join(DATA, "moon.json"), encoding="utf-8"))
+    wx_data = _json.load(open(os.path.join(DATA, "wuxing.json"), encoding="utf-8"))
+    landing = []
+    for mid in moon_data["moonOrder"]:
+        mo = moon_data["moons"][mid]
+        landing.append(("phases", mid, mo["cn"], mo["en"], mo["epithet"], mo["traits"], mo["fit"], "moon-quiz"))
+    for eid in wx_data["elementOrder"]:
+        el = wx_data["elements"][eid]
+        landing.append(("elements", eid, el["cn"], el["en"], el["epithet"], el["traits"], el["fit"], "five-natures"))
+
+    def tag_examples(slug, gender, tags):
+        pool = [c for c in chars if (gender == "F" and c["g"] in ("F", "N")) or (gender == "M" and c["g"] in ("M", "N"))]
+        flat = [c for c in pool if c["tag"] in tags]
+        if len(flat) < 2:
+            flat = pool
+        r2 = mulberry32(fnv1a(slug + gender))
+        surnames = SURNAME_POOL["a"]  # neutral: use a common surname for showcase
+        sn = surnames[int(next(r2) * len(surnames))]
+        g1 = flat[int(next(r2) * len(flat))]
+        rest = [c for c in flat if c["c"] != g1["c"]]
+        g2 = rest[int(next(r2) * len(rest))]
+        return {"s": {"c": sn[0], "p": sn[1], "t": sn[2]}, "g": [g1, g2]}
+
+    def link_rel(kind):
+        return "../../"
+
+    for kind, eid, cn, en, epithet, traits, tags, cta in landing:
+        slug = en.lower().replace(" ", "-")
+        rel = "../../"
+        canonical_l = f'<link rel="canonical" href="{esc(site_url)}/{kind}/{slug}/">\n' if site_url else ""
+        ex_html = ""
+        for gg, who in (("F", "her"), ("M", "him")):
+            mm = tag_examples(slug + kind, gg, tags)
+            full = mm["s"]["c"] + mm["g"][0]["c"] + mm["g"][1]["c"]
+            py = " ".join(mark(x["p"], x["t"]) for x in [mm["s"], mm["g"][0], mm["g"][1]])
+            ex_html += f'<p class="exname"><span lang="zh">{esc(full)}</span> ({esc(py)}) — for {who}</p>'
+        page_html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{en} ({cn}) — {epithet} | Mingzi</title>
+<meta name="description" content="{en} ({cn}), {epithet}. {traits[:140]} See {en}-nature Chinese names — two free examples — and get your own through the free quiz.">
+{canonical_l}<link rel="stylesheet" href="{rel}assets/style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="{rel}"><span class="seal-dot">名</span> Mingzi</a><a class="cta-mini" href="{rel}{cta}.html">Take the quiz</a></header>
+<main class="namepage">
+<p class="kicker">A nature, and the names that walk with it</p>
+<h1 class="bigname" style="font-size:clamp(56px,12vw,100px)" lang="zh">{cn}</h1>
+<p class="bigpy">{en} · {epithet}</p>
+<p class="lede">{traits}</p>
+<h2 class="sect">Names that fit {en}</h2>
+{ex_html}
+<p><a class="btn" href="{rel}{cta}.html">Get your own — free quiz →</a></p>
+<p class="related">For fun and self-reflection; no promises about fate.</p>
+</main>
+<footer class="foot"><p>Mingzi — your name, in real Chinese.</p></footer>
+</body>
+</html>'''
+        dpath = os.path.join(ROOT, kind, slug)
+        os.makedirs(dpath, exist_ok=True)
+        with open(os.path.join(dpath, "index.html"), "w", encoding="utf-8") as f:
+            f.write(page_html)
+
     # sitemap
     if site_url:
-        urls = [f"{site_url}/"] + [f"{site_url}/name/{m['slug']}/" for m in mappings]
+        urls = [f"{site_url}/", f"{site_url}/quiz.html", f"{site_url}/mystic.html"] \
+            + [f"{site_url}/name/{m['slug']}/" for m in mappings] \
+            + [f"{site_url}/{kind}/{en.lower().replace(' ', '-')}/" for kind, _eid, _cn, en, _ep, _tr, _tg, _cta in landing]
         with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
             for u in urls:
