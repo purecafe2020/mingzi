@@ -37,6 +37,14 @@ python tools/build.py          # 生成 500 页 + 数据 JSON + IndexNow key
 python -m http.server 8809     # http://localhost:8809
 ```
 
+## 上线状态（2026-11-17）
+
+- **GitHub Pages**: https://purecafe2020.github.io/mingzi/ （✅ 已开通，index/长尾页线上 200；SEO canonical/sitemap 均指向此地址）
+- **Vercel**: https://mingzi-ruddy.vercel.app （✅ 已部署，双线热备）
+- **收录**：IndexNow 已提交（HTTP 202）；Bing Webmaster Tools 提交 sitemap 待办（需登录微软账号）
+- **待办**：Vercel 自动部署——先在 vercel.com → Settings → Login Connections 绑定 GitHub 登录方式，再跑 `vercel git connect`
+- **代理备注**：本仓库 git 配置了 `http.proxy http://127.0.0.1:17890`；代理端口变了记得同步改（`git config http.proxy http://127.0.0.1:<新端口>`）
+
 ## 部署（GitHub Pages）
 
 1. 建仓库 `mingzi`，推送本目录。
