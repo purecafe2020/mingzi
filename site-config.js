@@ -2,7 +2,7 @@
 window.MINGZI_CONFIG = {
   // 站点地址（GitHub Pages 部署后填，如 "https://你的用户名.github.io/mingzi"）。
   // 留空时分享卡不显示域名角标。
-  siteUrl: "",
+  siteUrl: "https://879879.xyz",
 
   // Lemon Squeezy 商品页地址（开店后填）。留空时购买按钮先指向页内 waitlist。
   storeUrl: "",
