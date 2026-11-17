@@ -11,5 +11,5 @@ window.MINGZI_CONFIG = {
   waitlistUrl: "",
 
   // 你的邮箱：waitlist 表单走 formsubmit.co 免费通道（首次提交后需到邮箱点一次激活）。
-  contactEmail: ""
+  contactEmail: "purecafe2016@163.com"
 };

@@ -104,7 +104,19 @@ main { max-width: 880px; margin: 0 auto; padding: 0 24px 60px; }
 .tiers-mini { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 24px; margin: 30px 0; text-align: center; }
 .tiers-mini .tier-row { margin: 16px 0; }
 .related { color: var(--ink-soft); font-size: 15px; }
+/* moon quiz */
+.quizbox { max-width: 640px; margin: 40px auto; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 34px 28px; text-align: center; }
+.qtext { font-size: 24px; margin: 14px 0 24px; }
+.qoptions { display: flex; flex-direction: column; gap: 12px; }
+.qopt { padding: 16px 18px; font-size: 17px; text-align: left; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; font-family: inherit; color: var(--ink); transition: border-color .15s, background .15s; }
+.qopt:hover { border-color: var(--vermilion); background: #fff; }
+.moonphase { margin: 10px 0 4px; }
+.moonname { letter-spacing: 10px; font-size: clamp(48px, 10vw, 84px); }
+.sect { font-size: 22px; margin: 40px 0 14px; text-align: center; }
+.charcard.wide { width: 240px; }
+.charcard .nm { font-family: var(--serif-cn); font-size: 40px; margin: 4px 0; }
 @media (max-width: 560px) {
   .hero h1 { font-size: 32px; }
   .bigname { letter-spacing: 6px; }
+  .moonname { letter-spacing: 5px; }
 }
