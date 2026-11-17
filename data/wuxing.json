@@ -1,0 +1,29 @@
+{
+  "elements": {
+    "wood": { "en": "Wood", "cn": "木", "epithet": "The Grower", "traits": "Growth, kindness, reach — you expand, and things come alive around you.", "fit": ["tree", "floral", "nature", "season"], "balance": "fire", "balanceNote": "your energy flows upward into light — a name that carries flame" },
+    "fire": { "en": "Fire", "cn": "火", "epithet": "The Igniter", "traits": "Visibility, warmth, momentum — you start things and people gather.", "fit": ["light", "joy", "music"], "balance": "earth", "balanceNote": "your flame settles into ground — a name that anchors" },
+    "earth": { "en": "Earth", "cn": "土", "epithet": "The Stabilizer", "traits": "Trust, patience, load-bearing calm — people build on you.", "fit": ["earth", "virtue", "carriage"], "balance": "metal", "balanceNote": "your ground refines into an edge — a name with clean clarity" },
+    "metal": { "en": "Metal", "cn": "金", "epithet": "The Refiner", "traits": "Precision, principle, cut — you keep what works and remove the rest.", "fit": ["metal", "jade", "speech"], "balance": "water", "balanceNote": "your edge deepens into reflection — a name with still depth" },
+    "water": { "en": "Water", "cn": "水", "epithet": "The Deepener", "traits": "Depth, adaptability, quiet persistence — you outlast by flowing.", "fit": ["water", "sea", "mind", "weather"], "balance": "wood", "balanceNote": "your depth feeds living growth — a name that greens" }
+  },
+  "elementOrder": ["wood", "fire", "earth", "metal", "water"],
+  "tieBreak": ["wood", "fire", "earth", "metal", "water"],
+  "questions": [
+    { "q": "Your ideal morning is:", "A": "a walk among tall trees", "ea": "wood", "B": "a quiet deep lake", "eb": "water" },
+    { "q": "When you finish a project you secretly want to:", "A": "light it up and show everyone", "ea": "fire", "B": "file it perfectly and start the next", "eb": "metal" },
+    { "q": "The compliment you secretly want most:", "A": "you make people feel safe", "ea": "earth", "B": "you never stop growing", "eb": "wood" },
+    { "q": "In a conflict you tend to:", "A": "burn brighter and push", "ea": "fire", "B": "flow around and wait", "eb": "water" },
+    { "q": "Your dream workspace is:", "A": "a stable desk that never moves", "ea": "earth", "B": "a bench of sharp, precise tools", "eb": "metal" },
+    { "q": "Pick a landscape to live beside:", "A": "rolling hills and farmland", "ea": "earth", "B": "a wild forest trail", "eb": "wood" },
+    { "q": "Your friends describe your energy as:", "A": "a bonfire people gather around", "ea": "fire", "B": "a river — deep, calm, steady", "eb": "water" },
+    { "q": "When you learn something new you:", "A": "cut straight to the useful core", "ea": "metal", "B": "let it grow on you slowly", "eb": "wood" },
+    { "q": "Your ideal role in a team:", "A": "the anchor everyone relies on", "ea": "earth", "B": "the spark that starts things", "eb": "fire" },
+    { "q": "Choose a metal object to keep forever:", "A": "a perfectly balanced blade", "ea": "metal", "B": "a mirror that reflects everything exactly", "eb": "water" },
+    { "q": "The weather that matches your mood today:", "A": "clear burning sun", "ea": "fire", "B": "soft rain and mist", "eb": "water" },
+    { "q": "What do you collect?", "A": "tools and systems", "ea": "metal", "B": "plants and windowsill gardens", "eb": "wood" },
+    { "q": "In a crisis you become:", "A": "the ground — unmoved, absorbing", "ea": "earth", "B": "the flame — decisive, visible", "eb": "fire" },
+    { "q": "Your kind of conversation is:", "A": "deep, one topic, all the way down", "ea": "water", "B": "growing, branching, surprising", "eb": "wood" },
+    { "q": "A gift you would give:", "A": "something carved to last a lifetime", "ea": "metal", "B": "something warm that gathers people", "eb": "fire" },
+    { "q": "Your ideal legacy:", "A": "foundations others build on", "ea": "earth", "B": "growth that keeps living after you", "eb": "wood" }
+  ]
+}

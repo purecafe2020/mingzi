@@ -58,17 +58,20 @@
       "For <strong>" + esc(RESULT.name) + "</strong> (" + RESULT.type + "), 望舒 read the sky as —";
     document.getElementById("mCn").textContent = RESULT.moon.cn;
     document.getElementById("mEn").textContent = RESULT.moon.en + " · " + RESULT.moon.epithet;
-    document.getElementById("mTraits").textContent = RESULT.moon.traits;
+    document.getElementById("mTraits").textContent = RESULT.moon.traits.split(". ")[0] + ".";
     drawMoon(RESULT.moonId);
 
-    var cards = RESULT.candidates.map(function (m) {
-      var role = m.kind === "fit" ? "fits your nature" : "balances your nature";
+    // free tier: the first fitting name only; the full reading stays locked
+    var firstFit = RESULT.candidates.filter(function (m) { return m.kind === "fit"; })[0];
+    var cards = [];
+    if (firstFit) {
+      var m = firstFit;
       var full = m.s.c + m.g[0].c + m.g[1].c;
-      return '<div class="charcard wide"><p class="nm" lang="zh">' + esc(full) + '</p>' +
+      cards.push('<div class="charcard wide"><p class="nm" lang="zh">' + esc(full) + '</p>' +
         '<p class="zp">' + MoonCore.fullPy(m) + '</p>' +
         '<p class="zm">' + esc(m.g[0].m) + " · " + esc(m.g[1].m) + '</p>' +
-        '<p class="zt">' + esc(role) + ' — ' + esc(m.kind === "fit" ? RESULT.moon.fitNote : RESULT.moon.counterNote) + '</p></div>';
-    });
+        '<p class="zt">fits your nature — ' + esc(RESULT.moon.fitNote) + '</p></div>');
+    }
     document.getElementById("nameCards").innerHTML = cards.join("");
     R.scrollIntoView({ behavior: "smooth", block: "start" });
   }
