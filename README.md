@@ -39,6 +39,8 @@ python -m http.server 8809     # http://localhost:8809
 
 ## 上线状态（2026-11-17）
 
+- **主域名**: **https://879879.xyz** （✅ Cloudflare DNS-only CNAME → cname.vercel-dns.com，Vercel 生产域名，canonical/sitemap/分享卡角标均指向此地址；IndexNow 已提交）
+
 - **GitHub Pages**: https://purecafe2020.github.io/mingzi/ （✅ 已开通，index/长尾页线上 200；SEO canonical/sitemap 均指向此地址）
 - **Vercel**: https://mingzi-ruddy.vercel.app （✅ 已部署，双线热备）
 - **收录**：IndexNow 已提交（HTTP 202）；Bing Webmaster Tools 提交 sitemap 待办（需登录微软账号）
