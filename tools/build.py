@@ -393,7 +393,7 @@ def build(site_url: str):
 
     # sitemap
     if site_url:
-        urls = [f"{site_url}/", f"{site_url}/quiz.html", f"{site_url}/mystic.html"] \
+        urls = [f"{site_url}/", f"{site_url}/quiz.html", f"{site_url}/mystic.html", f"{site_url}/zodiac.html"] \
             + [f"{site_url}/name/{m['slug']}/" for m in mappings] \
             + [f"{site_url}/{kind}/{en.lower().replace(' ', '-')}/" for kind, _eid, _cn, en, _ep, _tr, _tg, _cta in landing]
         with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:

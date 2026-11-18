@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Star Sign × Chinese Zodiac — your birthday, two skies, one name | Mingzi</title>
+<meta name="description" content="Enter your birthday: 望舒 reads your Western star sign and your Chinese zodiac animal, then offers a Chinese name that carries both — the western sky and the Chinese earth. Free, no questions, no sign-up.">
+<link rel="canonical" href="https://879879.xyz/zodiac.html">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><span class="seal-dot">名</span> Mingzi</a>
+  <nav><a href="quiz.html">Moon Quiz</a> <a href="mystic.html">Five Natures</a> <a href="index.html#tiers">Certificate</a></nav>
+</header>
+
+<main>
+  <section id="intro" class="hero">
+    <h1>Two skies, one name.</h1>
+    <p class="sub">You already carry a western star sign. You also have a Chinese animal — the year you were born wears one. 望舒 reads both, and offers a Chinese name that carries the two of them: <strong>the sky you were born under, the earth you were born in</strong>. No questions — just your birthday.</p>
+    <div class="genrow">
+      <input id="nameInput" type="text" placeholder="Your name — e.g. Emma, Liam, Yara" maxlength="24" autocomplete="off">
+      <input id="dateInput" type="date" required>
+      <button id="startBtn" class="btn">Read my skies</button>
+    </div>
+    <p class="genhint">Free, instant, no sign-up. We use the calendar year for the animal — if you were born in January or February, check which side of the Lunar New Year you fall on. For fun and self-reflection; no promises about fate.</p>
+  </section>
+
+  <section id="zoResult" hidden>
+    <p class="kicker" id="zKicker"></p>
+    <div class="moonphase"><canvas id="zoCanvas" width="140" height="140"></canvas></div>
+    <h2 class="bigname moonname" id="zSign" lang="zh"></h2>
+    <p class="bigpy" id="zSignEn"></p>
+    <p class="lede" id="zLine"></p>
+    <p class="toneline" id="zAnimal"></p>
+
+    <h2 class="sect">A name that carries both</h2>
+    <div class="charcards" id="nameCards"></div>
+    <p class="safety">✓ Passed the cultural-safety scan. The western sky chooses the meaning; the Chinese earth chooses the sound.</p>
+    <div class="actions">
+      <button class="btn ghost" data-size="portrait">Share card · 4:5</button>
+      <button class="btn ghost" data-size="story">Story · 9:16</button>
+    </div>
+
+    <section class="lockedbox">
+      <h3>The full double reading</h3>
+      <ul class="lockedlist">
+        <li>The balancing name — drawn from the element that answers yours</li>
+        <li>Your animal's full line, and how it changes the name it walks with</li>
+        <li>Character-by-character reasoning, with the classics behind each one</li>
+        <li>Your two skies on one certificate — star sign, animal, name, seal</li>
+      </ul>
+      <a class="btn" href="index.html#waitlist">Unlock the full reading →</a>
+      <p class="genhint">The full reading is the first keepsake coming to the shop — the waitlist gets it first.</p>
+    </section>
+  </section>
+
+  <section class="how">
+    <div class="step"><span class="n">星</span><h3>The western sky</h3><p>Fire, earth, air or water — your star sign sets the meaning of the name: light for fire, ground for earth, sky for air, depth for water.</p></div>
+    <div class="step"><span class="n">肖</span><h3>The Chinese earth</h3><p>Tiger, dragon, horse or rat — the animal of your birth year sets the temper of the name, the way Chinese readers will feel it.</p></div>
+    <div class="step"><span class="n">名</span><h3>The one name</h3><p>Both skies meet in two characters — a real surname, a real given name, checked for sound, tone and cultural safety.</p></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Mingzi — your name, in real Chinese. Free forever for the name; pay only for the keepsakes.</p>
+  <p><a href="index.html">Home</a> · <a href="quiz.html">Moon Quiz</a> · <a href="mystic.html">Five Natures</a> · <a href="zodiac.html">Star × Zodiac</a> · <a href="index.html#tiers">Certificate</a></p>
+</footer>
+
+<script src="site-config.js"></script>
+<script src="assets/zodiac-core.js"></script>
+<script src="assets/zodiac-quiz.js"></script>
+</body>
+</html>

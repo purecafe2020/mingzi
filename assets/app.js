@@ -276,10 +276,39 @@
       });
     }
     var form = document.getElementById("wlForm");
-    if (CFG.waitlistUrl) {
-      form.action = CFG.waitlistUrl;
-    } else if (CFG.contactEmail) {
-      form.action = "https://formsubmit.co/" + CFG.contactEmail;
+    var note = document.getElementById("wlNote");
+    function wlMessage(txt, ok) {
+      note.textContent = txt;
+      note.style.color = ok ? "#4f7d4f" : "#a63a2b";
+    }
+    if (new URLSearchParams(location.search).get("subscribed") === "1") {
+      wlMessage("You're on the list — watch your inbox.", true);
+    }
+    if (CFG.waitlistUrl || CFG.contactEmail) {
+      var endpoint = CFG.waitlistUrl || ("https://formsubmit.co/ajax/" + CFG.contactEmail);
+      form.action = CFG.waitlistUrl || ("https://formsubmit.co/" + CFG.contactEmail);
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!email) return;
+        wlMessage("Sending…", true);
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ email: email, _subject: "Mingzi waitlist signup", _template: "table" })
+        }).then(function (r) {
+          return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+        }).then(function (res) {
+          if (res.ok && res.j && (res.j.success === "true" || res.j.success === true)) {
+            wlMessage("You're on the list — watch your inbox.", true);
+            form.reset();
+          } else {
+            wlMessage("Couldn't subscribe right now — please try again in a minute.", false);
+          }
+        }).catch(function () {
+          wlMessage("Couldn't subscribe right now — please try again in a minute.", false);
+        });
+      });
     } else {
       form.addEventListener("submit", function (e) { e.preventDefault(); });
       document.getElementById("wlNote").textContent = "The waitlist opens with the shop.";
