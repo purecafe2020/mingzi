@@ -5,6 +5,29 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 ---
 
+## [2.1.0] — 2026-11-23
+
+### Added
+- **The v1 site is back and still browsable**, archived under `v1/` — all ~517 pages:
+  `v1/name/*` (~500 SEO landing pages), `v1/phases/*`, `v1/elements/*`, plus
+  `v1/quiz.html`, `v1/zodiac.html`, `v1/mystic.html`, `v1/assets/`, `v1/data/`, `v1/tools/`.
+  Its relative links were left untouched, so it works from the sub-directory as-is.
+
+### Changed
+- `v1` canonical URLs, the v1 waitlist return URL, and `v1/sitemap.xml` (517 `<loc>` entries)
+  now point at `/v1/...` so the archived pages self-canonicalize instead of pointing at
+  URLs that now belong to v2.
+
+### Fixed
+- Repointed two dead internal links in the v1 archive:
+  `../../moon-quiz.html` -> `../../quiz.html`, `../../five-natures.html` -> `../../mystic.html`.
+
+### Note
+- The v2 app stays at the repository root. `v1/` exists to keep the previous site's
+  existing search traffic alive.
+
+---
+
 ## [2.0.0] — 2026-11-23
 
 Full rebuild. The old multi-path site (surname/naming + five-elements + zodiac) is replaced by a

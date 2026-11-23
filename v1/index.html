@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mingzi — Your name, in real Chinese. Free Chinese name generator with meaning.</title>
+<meta name="description" content="Type your English name and get a real Chinese name: a proper surname that echoes your name, a two-character given name chosen for meaning and tone flow, checked for cultural safety. Free, instant, no sign-up.">
+<link rel="canonical" href="https://879879.xyz/v1/">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><span class="seal-dot">名</span> Mingzi</a>
+  <nav><a href="quiz.html">Moon Quiz</a> <a href="#tiers">Certificate</a> <a href="#faq">FAQ</a></nav>
+</header>
+
+<main>
+  <section class="hero-night">
+    <img class="hero-art" src="assets/wangshu-hero.jpg" alt="望舒, the Moon Maiden — an ink painting of a woman in moon-white hanfu holding a lantern beneath an arc of eight moon phases">
+    <div class="hero-copy">
+      <h1>Meet 望舒, the Moon&nbsp;Maiden.</h1>
+      <p class="hero-sub">In the old poems she drives the moon across the sky, and makes the night legible. Here she reads the lost and the curious — and gives each traveller a Chinese name that fits. Free forever.</p>
+      <div class="hero-ctas">
+        <a class="btn" href="quiz.html">Begin with the Moon Quiz · 3 min</a>
+        <a class="btn ghost-light" href="#generator">Or type your name →</a>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="doors-title">She offers four doors</h2>
+  <div class="doors">
+    <a class="door" href="#generator"><span class="dnum">门一</span><h3>The quick name</h3><p>Type your name. A real surname that echoes it, a meaningful given name — in seconds.</p></a>
+    <a class="door" href="zodiac.html"><span class="dnum">门二</span><h3>The way of the stars</h3><p>Your western sign × your Chinese animal — one name that carries both. No questions, just your birthday.</p></a>
+    <a class="door" href="quiz.html"><span class="dnum">门三</span><h3>The way of science</h3><p>A 16-question personality reading across the eight moon phases. Two names fit your nature — one balances it.</p></a>
+    <a class="door" href="mystic.html"><span class="dnum">门四</span><h3>The way of the elements</h3><p>The old path: wood, fire, earth, metal, water. A name that walks with your element — adds wings, not weight.</p></a>
+  </div>
+  <p class="sub doors-note">Whichever door you take: not a transliteration sticker — a proper name, checked against the cultural-safety list, free forever.</p>
+
+  <section id="generator" class="gen">
+    <h2 class="sect">门一 · The quick name</h2>
+    <div class="genrow">
+      <input id="nameInput" type="text" placeholder="Type your name — e.g. Emma, Liam, Yara" autocomplete="off" maxlength="24">
+      <button id="goBtn" class="btn">Reveal my name</button>
+    </div>
+    <p class="genhint"><a href="quiz.html"><strong>Want a name that fits your soul?</strong> Take the Moon Maiden quiz — 16 questions, three names, free →</a></p>
+    <p class="genhint">Free, instant, no sign-up. The same name always gets the same Chinese name.</p>
+
+    <div id="result" class="result" hidden>
+      <p class="kicker" id="rKicker"></p>
+      <h2 class="bigname" id="rBig" lang="zh"></h2>
+      <p class="bigpy" id="rPy"></p>
+      <div class="charcards" id="rCards"></div>
+      <p class="why" id="rWhy"></p>
+      <p class="toneline" id="rTone"></p>
+      <p class="safety">✓ Checked against the cultural-safety list — nothing here sounds like an unlucky word, and every character belongs on a modern name.</p>
+      <div class="actions">
+        <button class="btn ghost" data-size="portrait">Share card · 4:5</button>
+        <button class="btn ghost" data-size="story">Story · 9:16</button>
+        <button class="btn ghost" data-size="header">Header · 3:1</button>
+        <a class="btn ghost" id="rPageLink" hidden>Open your page →</a>
+      </div>
+      <div class="upsell-mini">
+        <p>Keep it forever: the <strong>name certificate</strong> — signature, courtesy name, classical sources, seal artwork and pronunciation audio. <a href="#tiers">See the keepsakes →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="step"><span class="n">1</span><h3>A surname that sounds like you</h3><p>Chinese names start with a family name. Mingzi picks a classic surname from the same sound as your name — the way Chinese speakers actually name foreign friends.</p></div>
+    <div class="step"><span class="n">2</span><h3>A given name with meaning</h3><p>Two characters, chosen from a curated pool: real given-name characters, matched to your gender, with meanings that read like a small blessing.</p></div>
+    <div class="step"><span class="n">3</span><h3>Checked before you meet anyone</h3><p>Tone flow, rhythm, and a cultural-safety scan: nothing that sounds like death, illness or bad luck. The name you get is one you can say with confidence.</p></div>
+  </section>
+
+  <section id="tiers" class="tiers">
+    <h2>Free gets you the name. Keepsakes get you the rest.</h2>
+    <div class="tier-row">
+      <div class="tier">
+        <h3>Signature + meaning</h3>
+        <p class="price">$9.9</p>
+        <p>Your Chinese name as a designed signature card, plus a full meaning sheet — every character explained, with pronunciation.</p>
+        <a class="btn js-store" href="#">Get the signature card</a>
+      </div>
+      <div class="tier featured">
+        <h3>Name certificate</h3>
+        <p class="price">$24.9</p>
+        <p>The full keepsake: signature card, your personal courtesy name (表字) in the classical style, sources from Shuowen and the classics, seal artwork, pronunciation audio — on a print-ready certificate.</p>
+        <a class="btn js-store" href="#">Get the certificate</a>
+      </div>
+      <div class="tier">
+        <h3>Human-reviewed</h3>
+        <p class="price">$49.9</p>
+        <p>Everything in the certificate, re-checked line by line by a native reader, with one round of changes. Limited slots each week.</p>
+        <a class="btn js-store" href="#">Book a review</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="waitlist" class="waitlist">
+    <h2>Not ready yet?</h2>
+    <p>Leave your email and we'll send you the certificate the day the shop opens — plus one short letter on how a Chinese name really works.</p>
+    <form id="wlForm" class="wlrow" method="POST" action="https://formsubmit.co/purecafe2016@163.com">
+      <input type="hidden" name="_subject" value="Mingzi waitlist signup">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://879879.xyz/v1/?subscribed=1">
+      <input type="email" name="email" placeholder="you@example.com" required>
+      <button class="btn" type="submit">Notify me</button>
+    </form>
+    <p class="genhint" id="wlNote"></p>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Questions, answered honestly</h2>
+    <details><summary>Is this a real Chinese name, or a gimmick?</summary><p>A real name, built the way Chinese speakers build one: surname first, meaningful given characters after. It is not an official document — for passports or visas you still use your legal name — but for daily life, teachers, colleagues and seals, this is a name you can actually use.</p></details>
+    <details><summary>Can I pick a different name if I don't like it?</summary><p>Yes — try variants of your name (full name, nickname, middle name); each gets its own result. The paid certificate includes a round of adjustments with a native reader.</p></details>
+    <details><summary>Is it safe to get it tattooed?</summary><p>Every result passes an automated cultural-safety scan (no unlucky homophones, no dated characters). For a permanent tattoo, the certificate's tattoo sheet shows stroke-by-stroke layout you can hand to your artist — worth the few dollars before something permanent.</p></details>
+    <details><summary>Why is the name free?</summary><p>Because the name should be given, not sold. Mingzi charges only for the handmade keepsakes around it — calligraphy, seals, certificates — the way a calligrapher would.</p></details>
+    <details><summary>How do I pronounce it?</summary><p>Each character shows pinyin with tone numbers. The paid certificate adds audio recorded at natural speed, plus tone-flow tips so it sounds like a name, not a vocabulary drill.</p></details>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Mingzi — your name, in real Chinese. Free forever for the name; pay only for the keepsakes.</p>
+  <p><a href="index.html#generator">Generator</a> · <a href="quiz.html">Moon Quiz</a> · <a href="zodiac.html">Star × Zodiac</a> · <a href="mystic.html">Five Natures</a> · <a href="index.html#tiers">Certificate</a> · <a href="index.html#faq">FAQ</a></p>
+</footer>
+
+<script src="site-config.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

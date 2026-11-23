@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five Natures Quiz — the old way: an element, and a name that walks with it | Mingzi</title>
+<meta name="description" content="The way of the elements (五行): answer 16 questions and learn your nature — Wood, Fire, Earth, Metal or Water — with a Chinese name that walks with it. Free, instant, no sign-up. For fun and reflection.">
+<link rel="canonical" href="https://879879.xyz/v1/mystic.html">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./"><span class="seal-dot">名</span> Mingzi</a>
+  <nav><a href="quiz.html">Moon Quiz</a> <a href="index.html#tiers">Certificate</a> <a href="index.html#faq">FAQ</a></nav>
+</header>
+
+<main>
+  <section id="intro" class="hero">
+    <h1>The way of the elements.</h1>
+    <p class="sub">The old path: wood, fire, earth, metal, water — five natures, endlessly combining. Answer 16 questions and 望舒 reads your dominant element, then offers a name that walks with it — <strong>a name that adds wings, not weight</strong>. A second name that balances your element waits in the full reading.</p>
+    <div class="genrow">
+      <input id="nameInput" type="text" placeholder="Your name — e.g. Emma, Liam, Yara" maxlength="24" autocomplete="off">
+      <button id="startBtn" class="btn">Begin · 3 minutes</button>
+    </div>
+    <p class="genhint">Free, instant, no sign-up. A traditional framework for fun and self-reflection — not fortune-telling, and no promises about fate.</p>
+  </section>
+
+  <section id="quiz" class="quizbox" hidden>
+    <p class="kicker" id="qProgress"></p>
+    <h2 class="qtext" id="qText"></h2>
+    <div class="qoptions">
+      <button class="qopt" id="optA"></button>
+      <button class="qopt" id="optB"></button>
+    </div>
+    <p class="genhint" id="qBackWrap" hidden><a href="#" id="qBack">← change the previous answer</a></p>
+  </section>
+
+  <section id="wxResult" hidden>
+    <p class="kicker" id="wKicker"></p>
+    <div class="moonphase"><canvas id="elCanvas" width="140" height="140"></canvas></div>
+    <h2 class="bigname moonname" id="wCn" lang="zh"></h2>
+    <p class="bigpy" id="wEn"></p>
+    <p class="lede" id="wTraits"></p>
+
+    <h2 class="sect">A name that walks with your element</h2>
+    <div class="charcards" id="nameCards"></div>
+    <p class="safety">✓ Passed the cultural-safety scan. 生生不息 — the name flows with your nature, it does not promise to change it.</p>
+    <div class="actions">
+      <button class="btn ghost" data-size="portrait">Share card · 4:5</button>
+      <button class="btn ghost" data-size="story">Story · 9:16</button>
+    </div>
+
+    <section class="lockedbox">
+      <h3>The full element reading</h3>
+      <ul class="lockedlist">
+        <li>Your secondary element, and what it says about the year you are having</li>
+        <li>The balancing name — chosen from the element your own flows into</li>
+        <li>Character-by-character reasoning, with the classics behind each one</li>
+        <li>Your 生生不息 map: how your element feeds, and what feeds it</li>
+      </ul>
+      <a class="btn" href="index.html#waitlist">Unlock the full reading →</a>
+      <p class="genhint">The full reading is the first keepsake coming to the shop — the waitlist gets it first.</p>
+    </section>
+  </section>
+
+  <section class="how">
+    <div class="step"><span class="n">木</span><h3>Wood grows</h3><p>Kindness and reach — the nature of spring, of things that insist on living.</p></div>
+    <div class="step"><span class="n">火</span><h3>Fire lights</h3><p>Warmth and visibility — the nature of the clear sun, of rooms that brighten.</p></div>
+    <div class="step"><span class="n">土</span><h3>Earth holds</h3><p>Trust and patience — the nature of ground, of everything built to last.</p></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Mingzi — your name, in real Chinese. Free forever for the name; pay only for the keepsakes.</p>
+  <p><a href="index.html">Home</a> · <a href="quiz.html">Moon Quiz</a> · <a href="mystic.html">Five Natures</a> · <a href="index.html#tiers">Certificate</a></p>
+</footer>
+
+<script src="site-config.js"></script>
+<script src="assets/wuxing-core.js"></script>
+<script src="assets/wuxing-quiz.js"></script>
+</body>
+</html>

@@ -49,6 +49,10 @@ Files:
 | `ja.html` | 日本語 (Japanese) |
 | `sample-card.html` | Moon card template (preview / high-res export) |
 
+> 📦 **Archived — the v1 site is still live.** The previous site (a first-name → Chinese-name
+> generator with ~500 SEO landing pages) is preserved under [`v1/`](v1/) and browsable as-is.
+> See [CHANGELOG.md](CHANGELOG.md) for the full version history.
+
 ---
 
 ## 🧩 How it works
