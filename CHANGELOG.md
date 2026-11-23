@@ -5,6 +5,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 ---
 
+## [2.2.1] — 2026-11-23
+
+### Removed
+- `v1/tools/build.py` — the v1 site generator. It still carried the five-elements / zodiac
+  generation logic and read the now-deleted `data/wuxing.json`.
+
+### Note
+- `v1/tools/make_letter.py` and `v1/tools/make_samples.py` are untouched — they only render the
+  keepsake sample images and contain no fortune-telling code.
+- The generator itself is still available at tag `v1.0.0`.
+
+---
+
 ## [2.2.0] — 2026-11-23
 
 ### Removed

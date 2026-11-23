@@ -1,3 +1,9 @@
+> **Archived and trimmed.** This is the v1 site, preserved under `/v1/`.
+> The fortune-telling paths (`zodiac.html`, `mystic.html`, `elements/*`) and the site
+> generator `tools/build.py` have been removed, so the build instructions below no longer
+> apply. Canonical URLs and `sitemap.xml` now point at `/v1/...`.
+> The complete original is available at tag `v1.0.0`.
+
 # Mingzi 名字 — Your name, in real Chinese
 
 给外国人起中文名的免费工具站 + 付费成品（签名卡 / 命名证书 / 纹身安全卡）。
