@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://879879.xyz/v1/sitemap.xml

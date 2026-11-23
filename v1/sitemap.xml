@@ -2,8 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://879879.xyz/v1/</loc></url>
   <url><loc>https://879879.xyz/v1/quiz.html</loc></url>
-  <url><loc>https://879879.xyz/v1/mystic.html</loc></url>
-  <url><loc>https://879879.xyz/v1/zodiac.html</loc></url>
   <url><loc>https://879879.xyz/v1/name/emma/</loc></url>
   <url><loc>https://879879.xyz/v1/name/olivia/</loc></url>
   <url><loc>https://879879.xyz/v1/name/sophia/</loc></url>
@@ -512,9 +510,4 @@
   <url><loc>https://879879.xyz/v1/phases/waning-gibbous/</loc></url>
   <url><loc>https://879879.xyz/v1/phases/last-quarter/</loc></url>
   <url><loc>https://879879.xyz/v1/phases/waning-crescent/</loc></url>
-  <url><loc>https://879879.xyz/v1/elements/wood/</loc></url>
-  <url><loc>https://879879.xyz/v1/elements/fire/</loc></url>
-  <url><loc>https://879879.xyz/v1/elements/earth/</loc></url>
-  <url><loc>https://879879.xyz/v1/elements/metal/</loc></url>
-  <url><loc>https://879879.xyz/v1/elements/water/</loc></url>
 </urlset>

@@ -5,6 +5,33 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 ---
 
+## [2.2.0] — 2026-11-23
+
+### Removed
+- **The fortune-telling paths are gone from the v1 archive**, so the live site no longer
+  exposes them:
+  - `v1/zodiac.html` — western sign x Chinese animal
+  - `v1/mystic.html` — the five-natures hub
+  - `v1/elements/*` — the five element landing pages
+  - their dedicated assets: `assets/zodiac-core.js`, `assets/zodiac-quiz.js`,
+    `assets/wuxing-core.js`, `assets/wuxing-quiz.js`, `data/zodiac.json`, `data/wuxing.json`
+
+### Changed
+- `v1/index.html`: the "four doors" hub now offers **two** (the quick name + the moon quiz);
+  footer links to the removed paths were dropped.
+- `v1/sitemap.xml`: 517 -> 510 entries.
+
+### Added
+- Root `robots.txt` pointing at `https://879879.xyz/v1/sitemap.xml`.
+
+### Note
+- The remaining ~500 pages (`name/`, `phases/`, `quiz.html`, `assets/app.js`,
+  `data/moon.json`, `data/names.json`) are untouched and keep working.
+- `v1/tools/build.py` still contains generator code for the removed paths. It is a build
+  artifact, not a served page — remove on request.
+
+---
+
 ## [2.1.0] — 2026-11-23
 
 ### Added
