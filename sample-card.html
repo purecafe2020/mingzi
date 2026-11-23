@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sample Moon Card</title>
+<style>
+  :root{
+    --gold:#d9b877; --cream:#f7f2e8; --muted:#a7adc4;
+    --serif:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+    --script:"Brush Script MT","Segoe Script",cursive;
+    --sans:-apple-system,"Segoe UI",Roboto,"Microsoft YaHei",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1350px;overflow:hidden}
+  body{
+    background:radial-gradient(1400px 1000px at 50% 20%, rgba(217,184,119,.10), transparent 62%),
+               linear-gradient(168deg,#151b36,#0d1124 58%,#090c1b);
+    color:var(--cream);font-family:var(--sans);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mcard{
+    width:920px;height:1150px;border-radius:56px;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,#1b2242,#0e1225 70%);
+    border:3px solid rgba(217,184,119,.42);
+    box-shadow:0 60px 140px rgba(0,0,0,.55);
+    padding:70px 60px;display:flex;flex-direction:column;align-items:center;text-align:center;
+  }
+  .mc-inner{position:absolute;inset:34px;border:1.5px solid rgba(217,184,119,.18);border-radius:36px;pointer-events:none}
+  .mc-phase{width:230px;height:230px;margin:6px 0 18px}
+  .mc-name{font-family:var(--serif);font-size:110px;letter-spacing:26px;color:var(--cream);line-height:1.15;text-indent:26px}
+  .mc-py{font-size:30px;letter-spacing:8px;color:var(--gold);margin-top:14px}
+  .mc-sig{font-family:var(--script);font-size:78px;color:var(--gold);transform:rotate(-5deg);margin-top:4px}
+  .mc-div{width:150px;height:2px;background:rgba(217,184,119,.42);margin:30px 0}
+  .mc-type{font-size:30px;letter-spacing:5px;color:var(--gold);text-transform:uppercase}
+  .mc-dims{font-size:23px;color:var(--muted);margin-top:12px;letter-spacing:2px}
+  .mc-src{font-size:24px;line-height:1.7;color:#cfd3e2;margin-top:34px;max-width:720px}
+  .mc-god{font-family:var(--serif);font-size:27px;line-height:1.75;color:#e2e5f0;margin-top:32px;max-width:700px}
+  .mc-foot{position:absolute;left:0;right:0;bottom:48px;display:flex;justify-content:space-between;
+           padding:0 70px;font-size:24px;letter-spacing:5px;color:rgba(217,184,119,.72)}
+</style>
+</head>
+<body>
+  <div class="mcard">
+    <div class="mc-inner"></div>
+    <svg class="mc-phase" viewBox="0 0 100 100">
+      <defs>
+        <mask id="mc"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle cx="-22" cy="50" r="46" fill="black"/></mask>
+        <radialGradient id="litG" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+      <circle cx="50" cy="50" r="46" fill="url(#litG)" mask="url(#mc)"/>
+    </svg>
+    <div class="mc-name">陈弘毅</div>
+    <div class="mc-py">HÓNG YÌ</div>
+    <div class="mc-sig">陈弘毅</div>
+    <div class="mc-div"></div>
+    <div class="mc-type">Character · The Commander · ENTJ</div>
+    <div class="mc-dims">Extravert · Intuition · Thinking · Judging</div>
+    <div class="mc-src">“弘毅” — broad and resolute.<br>Analects: “A scholar must be broad-minded and resolute, for his burden is heavy and his road is long.”</div>
+    <div class="mc-god">“You lead so many forward — leave yourself a place to rest, too.”</div>
+    <div class="mc-foot"><span>No.0001</span><span>LUNA</span></div>
+  </div>
+</body>
+</html>

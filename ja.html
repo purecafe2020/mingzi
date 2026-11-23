@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月相醸名 — 中国語の名前</title>
+<style>
+  :root{
+    --night:#0d1124; --gold:#d9b877; --cream:#f7f2e8; --muted:#a7adc4;
+    --line:rgba(217,184,119,.25); --card:rgba(255,255,255,.04);
+    --serif:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+    --script:"Brush Script MT","Segoe Script",cursive;
+    --sans:-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Microsoft YaHei",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(900px 600px at 50% 26%, rgba(217,184,119,.09), transparent 62%),
+               linear-gradient(168deg,#151b36,#0d1124 58%,#090c1b);
+    background-attachment:fixed;color:var(--cream);font-family:var(--sans);min-height:100vh;
+  }
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(217,184,119,.12);
+    border-bottom:1px solid var(--line);text-align:center;font-size:12px;letter-spacing:1.5px;
+    color:var(--gold);padding:9px;backdrop-filter:blur(6px)}
+  .wrap{max-width:480px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;min-height:calc(100vh - 40px)}
+  .screen{display:none;flex:1;padding:30px 0 44px;flex-direction:column;justify-content:center}
+  .screen.active{display:flex}
+  #intro.active{justify-content:flex-start;padding-top:34px}
+  .center{text-align:center}
+  .moon{width:110px;height:110px;margin:0 auto 22px}
+  .moon svg{display:block}
+  .eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;text-transform:uppercase}
+  h1{font-family:var(--serif);font-size:33px;line-height:1.32;letter-spacing:.3px;margin-bottom:16px}
+  h1 .g{color:var(--gold)}
+  .sub{color:var(--muted);font-size:15px;line-height:1.85}
+  .cta{display:block;width:100%;padding:16px;border-radius:12px;border:1.5px solid var(--gold);
+       background:var(--gold);color:#1a1a26;font-size:15px;font-weight:700;letter-spacing:.5px;
+       cursor:pointer;margin-top:24px;font-family:var(--sans)}
+  .cta.ghost{background:transparent;color:var(--gold);margin-top:10px}
+  .cta:active{opacity:.85}
+  .foot{color:#6b6f85;font-size:12px;line-height:1.7;margin-top:18px;text-align:center}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:30px 0 8px;
+         border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
+  .stats div{text-align:center}
+  .stats b{display:block;font-family:var(--serif);font-size:19px;color:var(--gold)}
+  .stats span{font-size:10px;color:var(--muted);letter-spacing:.5px}
+
+  /* features */
+  .features{margin-top:26px;display:grid;gap:12px}
+  .feat{display:flex;gap:14px;align-items:flex-start;background:var(--card);
+        border:1px solid var(--line);border-radius:14px;padding:16px}
+  .feat .ic{font-size:20px;line-height:1;flex:0 0 auto;margin-top:2px}
+  .feat b{display:block;font-size:14px;margin-bottom:5px;color:var(--cream)}
+  .feat p{font-size:12.5px;line-height:1.65;color:var(--muted)}
+
+  /* types strip */
+  .types{margin-top:30px}
+  .types h2{font-family:var(--serif);font-size:18px;color:var(--cream);text-align:center;margin-bottom:14px}
+  .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .titem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .titem b{color:var(--gold);font-weight:600}
+
+  /* quiz */
+  .qbar{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .bar{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;background:var(--gold);transition:.3s}
+  .step{font-size:12px;color:var(--muted)}
+  .back{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:var(--sans)}
+  .q{font-family:var(--serif);font-size:22px;line-height:1.6;margin:18px 0 30px;min-height:118px}
+  .opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;
+       padding:18px 20px;margin-bottom:14px;border-radius:12px;border:1px solid var(--line);
+       background:rgba(255,255,255,.03);color:var(--cream);font-size:15px;line-height:1.55;
+       cursor:pointer;font-family:var(--sans)}
+  .opt:hover{border-color:var(--gold);background:rgba(217,184,119,.08)}
+  .opt .k{color:var(--gold);font-weight:700;flex:0 0 auto}
+
+  /* result */
+  .group{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+  .tname{font-family:var(--serif);font-size:38px;letter-spacing:.5px;margin-bottom:6px}
+  .code{font-size:12px;letter-spacing:6px;color:var(--muted)}
+  .desc{font-size:15px;line-height:1.9;color:#cfd3e2;margin:20px 0;text-align:left}
+  .say{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:16px 0;text-align:left}
+  .say .who{font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;text-transform:uppercase}
+  .say p{font-family:var(--serif);font-size:15px;line-height:1.8;color:#e2e5f0}
+  .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .tag{font-size:11px;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+  /* naming */
+  .field{margin-bottom:16px;text-align:left}
+  .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:8px}
+  .input{width:100%;height:46px;border-radius:10px;border:1px solid var(--line);
+         background:rgba(255,255,255,.05);color:var(--cream);padding:0 14px;font-size:16px;font-family:var(--sans)}
+  .input:focus{outline:none;border-color:var(--gold)}
+  .seg{display:flex;gap:10px}
+  .seg button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);
+              background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:14px;font-family:var(--sans)}
+  .seg button.on{border-color:var(--gold);color:var(--gold);background:rgba(217,184,119,.1)}
+  .namelist{margin-top:20px}
+  .nameopt{padding:18px 20px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:rgba(255,255,255,.03)}
+  .nameopt .nm{font-family:var(--serif);font-size:26px;letter-spacing:2px;color:var(--cream)}
+  .nameopt .py{font-size:13px;color:var(--gold);letter-spacing:1px;margin:6px 0}
+  .nameopt .src{font-size:12px;color:var(--muted);line-height:1.6}
+
+  /* paywall */
+  .lock{position:relative;overflow:hidden;border-radius:14px;border:1px dashed var(--line);
+        padding:20px;margin-bottom:14px;background:rgba(255,255,255,.02);text-align:center}
+  .lock .blur{filter:blur(5px);opacity:.45;font-family:var(--serif);font-size:22px;color:var(--cream);letter-spacing:2px}
+  .lock .lockic{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px}
+  .pw{border:1px solid var(--gold);border-radius:18px;padding:24px 20px;margin-top:20px;text-align:center;
+      background:linear-gradient(165deg,rgba(217,184,119,.10),rgba(217,184,119,.02))}
+  .pw h3{font-family:var(--serif);font-size:21px;margin-bottom:6px}
+  .pw .price{font-family:var(--serif);font-size:34px;color:var(--gold);margin:10px 0 2px}
+  .pw .pnote{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .pw ul{list-style:none;text-align:left;margin:14px 0 4px;padding:0}
+  .pw li{font-size:13px;color:#cfd3e2;padding:6px 0 6px 22px;position:relative}
+  .pw li:before{content:"✓";position:absolute;left:0;color:var(--gold)}
+  .pw .demo{font-size:11px;color:#6b6f85;margin-top:12px}
+
+  /* moon card */
+  .cardwrap{display:flex;justify-content:center;padding:8px 0 20px}
+  .mcard{width:100%;max-width:360px;aspect-ratio:4/5;border-radius:20px;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,#1b2242,#0e1225 70%);border:1px solid rgba(217,184,119,.4);
+    box-shadow:0 24px 60px rgba(0,0,0,.5);padding:24px 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .mc-inner{position:absolute;inset:12px;border:1px solid rgba(217,184,119,.18);border-radius:14px;pointer-events:none}
+  .mc-phase{width:80px;height:80px;margin:2px 0 8px}
+  .mc-name{font-family:var(--serif);font-size:38px;letter-spacing:6px;color:var(--cream);line-height:1.2}
+  .mc-py{font-size:11px;letter-spacing:2px;color:var(--gold);margin-top:4px}
+  .mc-sig{font-family:var(--script);font-size:25px;color:var(--gold);transform:rotate(-5deg)}
+  .mc-div{width:52px;height:1px;background:rgba(217,184,119,.4);margin:10px 0}
+  .mc-type{font-size:11px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase}
+  .mc-dims{font-size:9.5px;color:var(--muted);margin-top:4px}
+  .mc-src{font-size:10.5px;line-height:1.55;color:#cfd3e2;margin-top:8px}
+  .mc-god{font-family:var(--serif);font-size:11.5px;line-height:1.6;color:#e2e5f0;margin-top:8px}
+  .mc-foot{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:space-between;
+           padding:0 24px;font-size:9.5px;letter-spacing:1.5px;color:rgba(217,184,119,.7)}
+</style>
+</head>
+<body>
+
+<div class="topbar">無料 · 5分 · 登録不要</div>
+
+<div class="wrap">
+
+  <!-- ===== 1. Landing ===== -->
+  <section class="screen active" id="intro">
+    <div class="center">
+      <div class="moon">
+        <svg viewBox="0 0 100 100" width="110" height="110">
+          <defs><mask id="m0"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="38" fill="white"/><circle cx="72" cy="50" r="38" fill="black"/></mask></defs>
+          <circle cx="50" cy="50" r="50" fill="none" stroke="rgba(217,184,119,.3)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="38" fill="#d9b877" mask="url(#m0)"/>
+        </svg>
+      </div>
+      <div class="eyebrow">月相醸名</div>
+      <h1>本当のあなたに出会う——<br><span class="g">そして、あなたの中国語の名前。</span></h1>
+      <p class="sub">32の問いに答えて、あなたの月相を見つけよう。ルナがあなたのために中国語の名前を醸す——どの名前にも本物の古典の出典があります。</p>
+      <button class="cta" onclick="start()">テストを始める →</button>
+      <button class="cta ghost" onclick="scrollTypes()">16タイプを見る</button>
+    </div>
+
+    <div class="stats">
+      <div><b>32</b><span>質問</span></div>
+      <div><b>16</b><span>タイプ</span></div>
+      <div><b>8</b><span>月相</span></div>
+      <div><b>¥0</b><span>から始められる</span></div>
+    </div>
+
+    <div class="features">
+      <div class="feat"><div class="ic">📖</div><div><b>出典はいつも本物</b><p>すべての名前は『詩経』『楚辞』、あるいは唐詩宋詞まで遡れます。作り話はしません。</p></div></div>
+      <div class="feat"><div class="ic">🌙</div><div><b>道具ではなく、人</b><p>ルナが最後まで寄り添います——16タイプ、8つの月相、そしてあなたに本当に合う名前。</p></div></div>
+      <div class="feat"><div class="ic">🎴</div><div><b>手元に残るもの</b><p>受け取るのは文字だけではありません。月相カード——あなたの名前、あなたのしるし、あなたの物語。</p></div></div>
+      <div class="feat"><div class="ic">🔒</div><div><b>プライバシー第一</b><p>すべてブラウザの中で動きます。メール不要、登録不要、追跡なし。</p></div></div>
+    </div>
+
+    <div class="types" id="types">
+      <h2>16タイプを知る</h2>
+      <div class="tgrid">
+        <div class="titem"><b>軍師</b> INTJ</div><div class="titem"><b>賢者</b> INTP</div>
+        <div class="titem"><b>統帥</b> ENTJ</div><div class="titem"><b>論客</b> ENTP</div>
+        <div class="titem"><b>灯守</b> INFJ</div><div class="titem"><b>詩人</b> INFP</div>
+        <div class="titem"><b>導者</b> ENFJ</div><div class="titem"><b>放浪者</b> ENFP</div>
+        <div class="titem"><b>秩序守</b> ISTJ</div><div class="titem"><b>守護者</b> ISFJ</div>
+        <div class="titem"><b>差配人</b> ESTJ</div><div class="titem"><b>亭主</b> ESFJ</div>
+        <div class="titem"><b>名工</b> ISTP</div><div class="titem"><b>描者</b> ISFP</div>
+        <div class="titem"><b>先駆者</b> ESTP</div><div class="titem"><b>演者</b> ESFP</div>
+      </div>
+    </div>
+
+    <p class="foot">自分を見つめるための、気軽な参考です。<br>医療・心理・金融の助言ではありません。</p>
+  </section>
+
+  <!-- ===== 2. Quiz ===== -->
+  <section class="screen" id="quiz">
+    <div class="qbar">
+      <button class="back" onclick="back()">戾る</button>
+      <div class="bar"><span id="fill"></span></div>
+      <span class="step" id="step"></span>
+    </div>
+    <div class="q" id="qtext"></div>
+    <button class="opt" onclick="choose('a')"><span class="k">A</span><span id="optA"></span></button>
+    <button class="opt" onclick="choose('b')"><span class="k">B</span><span id="optB"></span></button>
+  </section>
+
+  <!-- ===== 3. Result ===== -->
+  <section class="screen" id="result">
+    <div class="center">
+      <div class="moon" style="width:140px;height:140px">
+        <svg viewBox="0 0 100 100" width="140" height="140">
+          <defs>
+            <mask id="m1"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="carve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG)" mask="url(#m1)"/>
+        </svg>
+      </div>
+      <div class="group" id="rgroup"></div>
+      <div class="tname" id="rname"></div>
+      <div class="code" id="rcode"></div>
+    </div>
+    <p class="desc" id="rdesc"></p>
+    <div class="tags" id="rtags"></div>
+    <div class="say"><div><div class="who">ルナの言葉</div><p id="rgod"></p></div></div>
+    <button class="cta" onclick="toNaming()">ルナに名前を醸してもらう →</button>
+  </section>
+
+  <!-- ===== 4. Naming ===== -->
+  <section class="screen" id="naming">
+    <div class="center" style="margin-bottom:20px">
+      <div class="eyebrow">ステップ2 · 命名</div>
+      <h1 style="font-size:25px;margin-bottom:8px">お名前を教えてください</h1>
+      <p class="sub" style="font-size:14px">ルナが、あなたらしさに合う中国語の名前を醸します。</p>
+    </div>
+    <div class="field">
+      <label>ローマ字のお名前（任意・音の参考に）</label>
+      <input class="input" id="enname" placeholder="例：Emma" />
+    </div>
+    <div class="field">
+      <label>雰囲気</label>
+      <div class="seg">
+        <button id="segF" onclick="setG('F')">やわらかめ</button>
+        <button id="segM" class="on" onclick="setG('M')">しっかりめ</button>
+      </div>
+    </div>
+    <button class="cta" onclick="generate()">名前を醸す</button>
+    <div class="namelist" id="namelist"></div>
+    <div id="pwArea"></div>
+    <p class="foot" id="namingFoot" style="display:none">どの名前にも、『詩経』『楚辞』、唐詩宋詞の本物の出典がつきます。</p>
+  </section>
+
+  <!-- ===== 5. Moon card ===== -->
+  <section class="screen" id="cardScreen">
+    <div class="center" style="margin-bottom:14px">
+      <div class="eyebrow">あなたの月相カード</div>
+    </div>
+    <div class="cardwrap">
+      <div class="mcard"><div class="mc-inner"></div>
+        <svg class="mc-phase" viewBox="0 0 100 100">
+          <defs>
+            <mask id="m2"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="ccarve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG2" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG2)" mask="url(#m2)"/>
+        </svg>
+        <div class="mc-name" id="cName"></div>
+        <div class="mc-py" id="cPy"></div>
+        <div class="mc-sig" id="cSig"></div>
+        <div class="mc-div"></div>
+        <div class="mc-type" id="cType"></div>
+        <div class="mc-dims" id="cDims"></div>
+        <div class="mc-src" id="cSrc"></div>
+        <div class="mc-god" id="cGod"></div>
+        <div class="mc-foot"><span id="cNo"></span><span>ルナ</span></div>
+      </div>
+    </div>
+    <button class="cta" onclick="savePNG()">⬇ カードを保存（PNG）</button>
+    <button class="cta ghost" onclick="toNaming()">別の名前を醸す</button>
+    <button class="cta ghost" onclick="restart()">もう一度テストする</button>
+    <p class="foot">ダウンロードできないときは、スクリーンショットでも大丈夫です。</p>
+  </section>
+
+</div>
+
+<script>
+/* ===== 32 questions ===== */
+const BANK={
+ EI:[
+  {q:"週末の夜、あなたは——",a:["友だちを誘って出かける","E"],b:["自分の小さな世界にこもる","I"]},
+  {q:"落ち込んだとき、あなたは普段——",a:["誰かに話す。口にすると楽になる","E"],b:["一人で処理する。人に迷惑をかけたくない","I"]},
+  {q:"知らない場所に入ったとき——",a:["自分から挨拶しに行く","E"],b:["誰かが来るまで静かに様子を見る","I"]},
+  {q:"長い一日のあと、回復するのは——",a:["人と話すこと、誰かといること","E"],b:["誰にも会わず、一人の時間","I"]},
+  {q:"グループの会話で、あなたはたいてい——",a:["話すほう","E"],b:["聞くほう","I"]},
+  {q:"新しいアイデアが浮かんだら——",a:["考えながら声に出す","E"],b:["まず頭の中で回してみる","I"]},
+  {q:"スマホが震えたら——",a:["すぐ見たい","E"],b:["急がない、あとで見る","I"]},
+  {q:"一日じゅう人と会う予定は——",a:["楽しみ。多いほどいい","E"],b:["少し疲れる。一人の時間がほしい","I"]}
+ ],
+ SN:[
+  {q:"どうしても欲しい「ほぼ無理」なものの前で——",a:["まずやってみる。うまくいくかもしれない","N"],b:["動く前にコストを測る","S"]},
+  {q:"判断するとき、より信じるのは——",a:["あのもやっとした直感","N"],b:["目の前の事実と数字","S"]},
+  {q:"話が「未来」になると、あなたは——",a:["ずっと先を思い描く","N"],b:["次の一歩に集中する","S"]},
+  {q:"映画で、より気になるのは——",a:["何を言おうとしているか","N"],b:["物語と細部が本物かどうか","S"]},
+  {q:"何かを説明するとき、あなたは——",a:["「〜のようなもの」と例えで言う","N"],b:["手順を具体的に説明する","S"]},
+  {q:"新しいものを見せられたら——",a:["ほかに何ができるか先に考える","N"],b:["今どう動くのかを先に見る","S"]},
+  {q:"好きな会話は——",a:["アイデアと可能性","N"],b:["具体的なことと体験","S"]},
+  {q:"計画するとき——",a:["まず大きな方向、細部はあと","N"],b:["手順を先に並べる","S"]}
+ ],
+ TF:[
+  {q:"深夜、傷ついた友だちから電話——",a:["話し終わるまでそばにいる","F"],b:["短く慰めて、明日の自分を守る","T"]},
+  {q:"誰かがいじめられている——",a:["損をしても止めに入る","F"],b:["巻き込まれないよう一歩引く","T"]},
+  {q:"いいものを分けるとき——",a:["みんなに行き渡ったか気にする","F"],b:["自分が損しないかを確かめる","T"]},
+  {q:"決めるとき、より重く見るのは——",a:["公正かどうか、やさしいかどうか","F"],b:["論理的かどうか、效率的かどうか","T"]},
+  {q:"面と向かって批判されたら——",a:["まず傷つく","F"],b:["まず正しいかどうかを判断する","T"]},
+  {q:"より心を動かすのは——",a:["誠実な物語","F"],b:["美しい論理","T"]},
+  {q:"誰かの選択を手傳うとき——",a:["その人がどう感じるかを考える","F"],b:["どの選択が一番うまくいくかを考える","T"]},
+  {q:"言い争いで、あなたはどちらかというと——",a:["両方をなだめて気づかう側","F"],b:["どちらが正しいかを言う側","T"]}
+ ],
+ JP:[
+  {q:"旅行の前に——",a:["旅程をきちんと立てる","J"],b:["大まかな方向だけ、途中で決める","P"]},
+  {q:"やり残したことがあると——",a:["終わるまで気になって仕方ない","J"],b:["あとでいいや、と置いておける","P"]},
+  {q:"机や部屋はだいたい——",a:["すべて定位置にある","J"],b:["少し散らかっているが、場所は分かる","P"]},
+  {q:"締め切りのある課題——",a:["ずっと前に始める","J"],b:["ギリギリまで引っ張りがち","P"]},
+  {q:"予定が崩れたら——",a:["嫌だな、元に戾したい","J"],b:["まあいいか、むしろ楽しいかも","P"]},
+  {q:"決めごとをするとき——",a:["早く決める。決まれば楽になる","J"],b:["もっといい選択のために開いておく","P"]},
+  {q:"どちらが好み——",a:["前もって決めた予定","J"],b:["「そのとき次第」の余地","P"]},
+  {q:"急に誘われたら——",a:["前もって言ってほしい","J"],b:["いつでも、行こう","P"]}
+ ]
+};
+const QUESTIONS=[];
+for(let i=0;i<8;i++){['EI','SN','TF','JP'].forEach(d=>{const it=BANK[d][i];QUESTIONS.push({dim:d,q:it.q,a:{t:it.a[0],v:it.a[1]},b:{t:it.b[0],v:it.b[1]}});});}
+const DIMWORD={E:"外向",I:"内向",S:"感覚",N:"直観",T:"思考",F:"感情",J:"判断",P:"知覚"};
+const CARVE={"new":50,"waxing-crescent":27,"first-quarter":4,"waxing-gibbous":-22,"full":-300,
+             "waning-gibbous":122,"last-quarter":96,"waning-crescent":73};
+
+const TYPES={
+ INTJ:{group:"謀略組 · NT",name:"軍師",ph:"new",desc:"遠くから盤面の全体を見渡せる人。多くの人より、ずっと先まで。混沌を秩序に、ぼやけたものを輪郭に変えるのが好き。冷たいと思われがちだけど、本当は、先に全部考え拔いているだけ。",god:"ずっと先まで見えている人。足もとに落ちている月あかりも、忘れないで。"},
+ INTP:{group:"謀略組 · NT",name:"賢者",ph:"new",desc:"「なぜ」に尽きない好奇心。表面の騒がしさには興味がなく、その下の原理だけを見ている。あなたの世界は広くて、ほとんど頭の中にある。",god:"頭の中に空がまるごとある人——今夜は、外に出て息をしよう。"},
+ ENTJ:{group:"謀略組 · NT",name:"統帥",ph:"waxing-gibbous",desc:"どちらへ進むべきか、いつも分かっている。そして、みんなをそこへ連れていく勇気がある。決断は速く、まっすぐで、引きずらない。",god:"たくさんの人を前に進めてきた人——自分が休める場所も、ちゃんと残して。"},
+ ENTP:{group:"謀略組 · NT",name:"論客",ph:"waxing-gibbous",desc:"「当たり前」のすべてに挑むのが好き。頭の回転が速く、誰も気づかなかった角度をいつも見つける。",god:"世界中に問いを投げてきた人——答えの中には、月がゆっくり渡してくれるものもある。"},
+ INFJ:{group:"理想組 · NF",name:"灯守",ph:"waning-gibbous",desc:"静かだけど、人の心の奧までまっすぐ見える。いつも誰かのために灯をともしていて、自分の暗がりはめったに話さない。",god:"たくさんの人に灯を揭げてきた人——今夜は、わたしがあなたを照らすね。"},
+ INFP:{group:"理想組 · NF",name:"詩人",ph:"waning-gibbous",desc:"心の中に、もうひとつの世界が住んでいる。やわらかくて、広くて、決して妥協しない。勝ち負けより、それが本物かどうかを気にしてきた。",god:"その世界をずっと抱えてきた人——疲れたら、ここで一緒に休もう。"},
+ ENFJ:{group:"理想組 · NF",name:"導者",ph:"full",desc:"人に火を灯すために生まれてきた人。みんなを集めて、一人ひとりがちゃんと見てもらえていると感じさせる。",god:"たくさんの人を照らしてきた人——わたしにも、あなたを照らさせて。"},
+ ENFP:{group:"理想組 · NF",name:"放浪者",ph:"full",desc:"あたたかくて、自由で、世界のためにいつも目に淚をためている。どこへ行っても、光を連れていく。",god:"速く、明るく走ってきた人——ときには立ち止まって、月を見て。"},
+ ISTJ:{group:"守護組 · SJ",name:"秩序守",ph:"waning-crescent",desc:"安心できるほど頼りになる人。約束したことは必ず果たし、決まりはきちんと守る。",god:"約束をひとつずつ守ってきた人——今夜は何もしなくていい、そばにいるよ。"},
+ ISFJ:{group:"守護組 · SJ",name:"守護者",ph:"last-quarter",desc:"静かにたくさんのものを背負っていて、疲れたとはめったに言わない。みんなの好みを覚えていて、みんなの気持ちを気づかう。",god:"みんなのことを大切にしてきた人——自分も大切にされていいんだよ、忘れないで。"},
+ ESTJ:{group:"守護組 · SJ",name:"差配人",ph:"waxing-crescent",desc:"あなたがいると、物事は崩れない。現実的で決断が速く、決まりを敷いて場を支えるために生まれている。",god:"たくさんの場を支えてきた人——今夜は、わたしが支えるね。"},
+ ESFJ:{group:"守護組 · SJ",name:"亭主",ph:"first-quarter",desc:"みんなを歓迎し、ちゃんと気にかける。あなたのあたたかさは大きな音はしないけれど、確かにあたたかい。",god:"みんなの面倒をみてきた人——今度は、わたしがあなたの面倒をみるよ。"},
+ ISTP:{group:"探索組 · SP",name:"名工",ph:"waning-crescent",desc:"口数は多くないのに、なんでも直せて、なんでも作れる。言葉ではなく、手で問題を解く。",god:"いつも直して、いつも解決してきた人——今夜は、道具を置いて。"},
+ ISFP:{group:"探索組 · SP",name:"描者",ph:"last-quarter",desc:"静かで、おおらか。それでいて、美しさと感情には鋭い。今この瞬間を生きて、それを美しくする。",god:"日々を一枚の繪にしてきた人——自分のために、空白をひとマス残して。"},
+ ESTP:{group:"探索組 · SP",name:"先駆者",ph:"waxing-crescent",desc:"最初に飛び込む人。世界に好奇心いっぱいで、迷うより先に体が動く。",god:"すごい速さで駆けてきた人——ときには立ち止まって、後ろの月を見て。"},
+ ESFP:{group:"探索組 · SP",name:"演者",ph:"first-quarter",desc:"どこへ行っても舞臺になる。あたたかくて誠実で、がんばらなくても人を笑顔にしてしまう。",god:"喜びをみんなに分けてきた人——今夜は、自分のために少し残しておいて。"}
+};
+
+/* ===== names (4 groups, real sources) ===== */
+const SURNAMES=["Chen","Lin","Su","Shen","Gu","Lu","Jiang","Xu","Song","Wen","Ye","Bai","Cheng","Xiao","Yu","Zhong","Ji","Wen","Li","Xie"];
+const NAMES={
+ NT:[
+  {n:"睿",py:"rui4",m:"聡明で、深く見通す",s:"《說文解字》：「睿，深明也，通也。」"},
+  {n:"修远",py:"xiu1 yuan3",m:"長い道のり、求め続ける",s:"《楚辭·離騷》：「路漫漫其修遠兮，吾將上下而求索。」"},
+  {n:"景行",py:"jing3 xing2",m:"明るい大道",s:"《詩經·小雅·車舝》：「高山仰止，景行行止。」"},
+  {n:"如琢",py:"ru2 zhuo2",m:"琢いて磨かれた",s:"《詩經·衛風·淇奧》：「如切如磋，如琢如磨。」"},
+  {n:"维新",py:"wei2 xin1",m:"日々に新たに",s:"《詩經·大雅·文王》：「周雖舊邦，其命維新。」"},
+  {n:"明哲",py:"ming2 zhe2",m:"明るくて賢い",s:"《詩經·大雅·烝民》：「既明且哲，以保其身。」"},
+  {n:"博学",py:"bo2 xue2",m:"広く学ぶ",s:"《禮記·中庸》：「博學之，審問之，慎思之，明辨之，篤行之。」"},
+  {n:"慎思",py:"shen4 si1",m:"慎んで考える",s:"《禮記·中庸》：「博學之，審問之，慎思之，明辨之，篤行之。」"},
+  {n:"明辨",py:"ming2 bian4",m:"はっきり見分ける",s:"《禮記·中庸》：「博學之，審問之，慎思之，明辨之，篤行之。」"},
+  {n:"笃行",py:"du3 xing2",m:"誠実に実践する",s:"《禮記·中庸》：「博學之，審問之，慎思之，明辨之，篤行之。」"},
+  {n:"弘毅",py:"hong2 yi4",m:"広く、意志が強い",s:"《論語·泰伯》：「士不可以不弘毅，任重而道遠。」"},
+  {n:"道远",py:"dao4 yuan3",m:"任重くして道遠し",s:"《論語·泰伯》：「士不可以不弘毅，任重而道遠。」"},
+  {n:"知新",py:"zhi1 xin1",m:"故きを温めて新しきを知る",s:"《論語·為政》：「溫故而知新，可以為師矣。」"},
+  {n:"思齐",py:"si1 qi2",m:"優れた人に倣う",s:"《論語·里仁》：「見賢思齊焉，見不賢而內自省也。」"},
+  {n:"自强",py:"zi4 qiang2",m:"自ら努め続ける",s:"《周易·乾》：「天行健，君子以自強不息。」"},
+  {n:"行健",py:"xing2 jian4",m:"健やかに進む",s:"《周易·乾》：「天行健，君子以自強不息。」"},
+  {n:"谦益",py:"qian1 yi4",m:"謙虚は益をもたらす",s:"《尚書·大禹謨》：「滿招損，謙受益。」"},
+  {n:"兼济",py:"jian1 ji4",m:"広く世を助ける",s:"《孟子·盡心上》：「窮則獨善其身，達則兼濟天下。」"},
+  {n:"如圭",py:"ru2 gui1",m:"玉のように清らか",s:"《詩經·衛風·淇奧》：「如金如錫，如圭如璧。」"},
+  {n:"攻玉",py:"gong1 yu4",m:"磨いて自分を高める",s:"《詩經·小雅·鶴鳴》：「它山之石，可以攻玉。」"},
+ ],
+ NF:[
+  {n:"兰",py:"lan2",m:"香草、高潔",s:"《楚辭·九歌·湘夫人》：「沅有芷兮澧有蘭。」"},
+  {n:"芷",py:"zhi3",m:"香草、清らかな香り",s:"《楚辭·九歌·湘夫人》：「沅有芷兮澧有蘭。」"},
+  {n:"清",py:"qing1",m:"清らかで、自らを守る",s:"《楚辭·漁父》：「滄浪之水清兮，可以濯吾纓。」"},
+  {n:"明月",py:"ming2 yue4",m:"皓々と明るい月",s:"唐·張九齡《望月懷遠》：「海上生明月，天涯共此時。」"},
+  {n:"云起",py:"yun2 qi3",m:"ゆったりと自在",s:"唐·王維《終南別業》：「行到水窮處，坐看雲起時。」"},
+  {n:"子衿",py:"zi3 jin1",m:"学びの襟、上品",s:"《詩經·鄭風·子衿》：「青青子衿，悠悠我心。」"},
+  {n:"蒹葭",py:"jian1 jia1",m:"秋の水辺の人",s:"《詩經·秦風·蒹葭》：「蒹葭蒼蒼，白露為霜。」"},
+  {n:"春晓",py:"chun1 xiao3",m:"春の夜明け",s:"唐·孟浩然《春曉》：「春眠不覺曉，處處聞啼鳥。」"},
+  {n:"采薇",py:"cai3 wei1",m:"柳がなよなよと",s:"《詩經·小雅·采薇》：「昔我往矣，楊柳依依。」"},
+  {n:"依依",py:"yi1 yi1",m:"別れがたく、慕う",s:"《詩經·小雅·采薇》：「昔我往矣，楊柳依依。」"},
+  {n:"琴瑟",py:"qin2 se4",m:"琴と瑟の調べ、和合",s:"《詩經·周南·關雎》：「窈窕淑女，琴瑟友之。」"},
+  {n:"静好",py:"jing4 hao3",m:"静かで穏やか",s:"《詩經·鄭風·女曰雞鳴》：「琴瑟在御，莫不靜好。」"},
+  {n:"悠悠",py:"you1 you1",m:"思いは長く続く",s:"《詩經·鄭風·子衿》：「青青子衿，悠悠我心。」"},
+  {n:"婉如",py:"wan3 ru2",m:"しなやかで美しい",s:"《詩經·鄭風·野有蔓草》：「有美一人，婉如清揚。」"},
+  {n:"清扬",py:"qing1 yang2",m:"眉目清らか",s:"《詩經·鄭風·野有蔓草》：「有美一人，婉如清揚。」"},
+  {n:"轻舟",py:"qing1 zhou1",m:"軽やかで自由",s:"唐·李白《早發白帝城》：「輕舟已過萬重山。」"},
+  {n:"疏影",py:"shu1 ying3",m:"淡く清雅",s:"宋·林逋《山園小梅》：「疏影橫斜水清淺，暗香浮動月黃昏。」"},
+  {n:"暗香",py:"an4 xiang1",m:"ほのかな香り",s:"宋·林逋《山園小梅》：「疏影橫斜水清淺，暗香浮動月黃昏。」"},
+  {n:"若邻",py:"ruo4 lin2",m:"天涯も隣のごとく",s:"唐·王勃《送杜少府之任蜀州》：「海內存知己，天涯若比鄰。」"},
+  {n:"呦呦",py:"you1 you1",m:"鹿の鳴き声、喜び",s:"《詩經·小雅·鹿鳴》：「呦呦鹿鳴，食野之苹。」"},
+ ],
+ SJ:[
+  {n:"恒",py:"heng2",m:"変わらず長く",s:"《詩經·小雅·天保》：「如月之恆，如日之升。」"},
+  {n:"淑",py:"shu1",m:"おだやかで善良",s:"《詩經·周南·關雎》：「窈窕淑女，君子好逑。」"},
+  {n:"坦",py:"tan3",m:"坦々とおおらか",s:"《論語·述而》：「君子坦蕩蕩，小人長戚戚。」"},
+  {n:"清泉",py:"qing1 quan2",m:"清らかな泉",s:"唐·王維《山居秋暝》：「明月松間照，清泉石上流。」"},
+  {n:"白露",py:"bai2 lu4",m:"秋の気配、清らか",s:"《詩經·秦風·蒹葭》：「蒹葭蒼蒼，白露為霜。」"},
+  {n:"安",py:"an1",m:"安らかで地に足がつく",s:"《詩經·小雅·常棣》：「喪亂既平，既安且寧。」"},
+  {n:"静女",py:"jing4 nv3",m:"しずかな乙女",s:"《詩經·邶風·靜女》：「靜女其姝，俟我於城隅。」"},
+  {n:"其姝",py:"qi2 shu1",m:"なんと美しい",s:"《詩經·邶風·靜女》：「靜女其姝，俟我於城隅。」"},
+  {n:"温良",py:"wen1 liang2",m:"温かくて善良",s:"《論語·學而》：「夫子溫良恭儉讓以得之。」"},
+  {n:"宁",py:"ning2",m:"穏やかで静か",s:"《詩經·小雅·常棣》：「喪亂既平，既安且寧。」"},
+  {n:"守拙",py:"shou3 zhuo1",m:"素朴を守る",s:"晉·陶淵明《歸園田居》：「開荒南野際，守拙歸園田。」"},
+  {n:"悠然",py:"you1 ran2",m:"ゆったりと心地よい",s:"晉·陶淵明《飲酒》：「採菊東籬下，悠然見南山。」"},
+  {n:"知足",py:"zhi1 zu2",m:"足るを知る",s:"《老子》：「知足者富。」"},
+  {n:"抱朴",py:"bao4 pu3",m:"素朴を抱く",s:"《老子》：「見素抱樸，少私寡欲。」"},
+  {n:"见素",py:"jian4 su4",m:"ありのままの清らかさ",s:"《老子》：「見素抱樸，少私寡欲。」"},
+  {n:"温故",py:"wen1 gu4",m:"古きを温ねる",s:"《論語·為政》：「溫故而知新，可以為師矣。」"},
+  {n:"慎独",py:"shen4 du2",m:"独りでも慎む",s:"《禮記·中庸》：「君子慎其獨也。」"},
+  {n:"乐群",py:"le4 qun2",m:"仲間と楽しく",s:"《禮記·學記》：「敬業樂群。」"},
+  {n:"敬业",py:"jing4 ye4",m:"仕事に打ち込む",s:"《禮記·學記》：「敬業樂群。」"},
+  {n:"素心",py:"su4 xin1",m:"素直で清らかな心",s:"晉·陶淵明《移居》：「聞多素心人，樂與數晨夕。」"},
+ ],
+ SP:[
+  {n:"川",py:"chuan1",m:"絶えず流れる",s:"《論語·子罕》：「子在川上曰：逝者如斯夫，不舍晝夜。」"},
+  {n:"行",py:"xing2",m:"歩み、実践する",s:"《詩經·小雅·車舝》：「高山仰止，景行行止。」"},
+  {n:"苍苍",py:"cang1 cang1",m:"広く果てしない",s:"《詩經·秦風·蒹葭》：「蒹葭蒼蒼，白露為霜。」"},
+  {n:"长风",py:"chang2 feng1",m:"万里を乗り越える",s:"唐·李白《行路難》：「長風破浪會有時，直掛雲帆濟滄海。」"},
+  {n:"千帆",py:"qian1 fan1",m:"千の帆が競う",s:"唐·劉禹錫：「沉舟側畔千帆過，病樹前頭萬木春。」"},
+  {n:"无晴",py:"wu2 qing2",m:"晴雨に動じない",s:"宋·蘇軾《定風波》：「回首向來蕭瑟處，歸去，也無風雨也無晴。」"},
+  {n:"直挂",py:"zhi2 gua4",m:"まっすぐ帆を掲げる",s:"唐·李白《行路難》：「長風破浪會有時，直掛雲帆濟滄海。」"},
+  {n:"云帆",py:"yun2 fan1",m:"雲の帆",s:"唐·李白《行路難》：「直掛雲帆濟滄海。」"},
+  {n:"破浪",py:"po4 lang4",m:"波を切り裂く",s:"唐·李白《行路難》：「長風破浪會有時。」"},
+  {n:"千里",py:"qian1 li3",m:"千里を目指す",s:"《荀子·勸學》：「不積跬步，無以至千里。」"},
+  {n:"行行",py:"xing2 xing2",m:"歩み続ける",s:"《古詩十九首》：「行行重行行，與君生別離。」"},
+  {n:"快哉",py:"kuai4 zai1",m:"痛快この上ない",s:"宋·蘇軾《水調歌頭》：「一點浩然氣，千里快哉風。」"},
+  {n:"浩然",py:"hao4 ran2",m:"浩然の気",s:"《孟子·公孫丑》：「我善養吾浩然之氣。」"},
+  {n:"乘风",py:"cheng2 feng1",m:"風に乗る",s:"宋·蘇軾《水調歌頭》：「我欲乘風歸去。」"},
+  {n:"东篱",py:"dong1 li2",m:"東の垣根で菊を摘む",s:"晉·陶淵明《飲酒》：「採菊東籬下，悠然見南山。」"},
+  {n:"星野",py:"xing1 ye3",m:"星が野に垂れる",s:"唐·杜甫《旅夜書懷》：「星垂平野闊，月湧大江流。」"},
+  {n:"平野",py:"ping2 ye3",m:"胸の広さ、おおらか",s:"唐·杜甫《旅夜書懷》：「星垂平野闊，月湧大江流。」"},
+  {n:"逍遥",py:"xiao1 yao2",m:"自在でとらわれない",s:"《莊子·逍遙遊》：「若夫乘天地之正，而御六氣之辯，以遊無窮者。」"},
+  {n:"扶摇",py:"fu2 yao2",m:"つむじ風に舞い上がる",s:"《莊子·逍遙遊》：「摶扶搖而上者九萬里。」"},
+  {n:"明德",py:"ming2 de2",m:"明るい徳",s:"《禮記·大學》：「大學之道，在明明德。」"},
+ ],
+};
+
+const PRICE="¥600";
+
+let idx=0, log=[], code=null, curType=null, curGroup=null, gender='M', unlocked=false, freeName=null, altNames=[];
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); window.scrollTo(0,0);}
+function scrollTypes(){document.getElementById('types').scrollIntoView({behavior:'smooth'});}
+
+function start(){idx=0;log=[];render();show('quiz');}
+function back(){if(idx>0){idx--;log.pop();render();}else{show('intro');}}
+function render(){
+  const q=QUESTIONS[idx];
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('optA').textContent=q.a.t;
+  document.getElementById('optB').textContent=q.b.t;
+  document.getElementById('step').textContent=(idx+1)+' / '+QUESTIONS.length;
+  document.getElementById('fill').style.width=(idx/QUESTIONS.length*100)+'%';
+}
+function choose(k){
+  const q=QUESTIONS[idx];log.push({dim:q.dim,v:k==='a'?q.a.v:q.b.v});idx++;
+  if(idx<QUESTIONS.length){render();}else{document.getElementById('fill').style.width='100%';finish();}
+}
+function score(){
+  const c={},last={};
+  log.forEach(o=>{c[o.v]=(c[o.v]||0)+1;last[o.dim]=o.v;});
+  const pick=(a,b,dim)=>((c[a]||0)>(c[b]||0))?a:((c[b]||0)>(c[a]||0))?b:(last[dim]||a);
+  return pick('E','I','EI')+pick('S','N','SN')+pick('T','F','TF')+pick('J','P','JP');
+}
+function finish(){
+  code=score();curType=TYPES[code];
+  curGroup = code.includes('N') ? (code.includes('T')?'NT':'NF') : (code.includes('T')?'SP':'SJ');
+  document.getElementById('carve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('rgroup').textContent=curType.group;
+  document.getElementById('rname').textContent=curType.name;
+  document.getElementById('rcode').textContent=code.split('').join(' ');
+  document.getElementById('rdesc').textContent=curType.desc;
+  document.getElementById('rgod').textContent='“'+curType.god+'”';
+  document.getElementById('rtags').innerHTML=code.split('').map(x=>'<span class="tag">'+DIMWORD[x]+'</span>').join('');
+  show('result');
+}
+function pick(arr,n){const a=arr.slice();const out=[];
+  while(a.length && out.length<n){out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);} return out;}
+function escc(o){return JSON.stringify(o).replace(/'/g,"&#39;");}
+
+function toNaming(){
+  if(!code){show('intro');return;}
+  unlocked=false;
+  document.getElementById('namelist').innerHTML='';
+  document.getElementById('pwArea').innerHTML='';
+  document.getElementById('namingFoot').style.display='none';
+  show('naming');
+}
+function setG(g){gender=g;
+  document.getElementById('segM').classList.toggle('on', g==='M');
+  document.getElementById('segF').classList.toggle('on', g==='F');}
+function generate(){
+  const pool=NAMES[curGroup]||NAMES.NF;
+  const picks=pick(pool,3);
+  freeName=picks[0]; altNames=[picks[1],picks[2]];
+  document.getElementById('namelist').innerHTML=`
+    <div class="nameopt">
+      <div class="nm">${freeName.n}</div>
+      <div class="py">${freeName.py} · ${freeName.m}</div>
+      <div class="src">${freeName.s}</div>
+    </div>`;
+  document.getElementById('namingFoot').style.display='block';
+  renderPaywall();
+}
+function renderPaywall(){
+  document.getElementById('pwArea').innerHTML=`
+    <div class="lock"><div class="blur">${altNames[0].n} · ${altNames[1].n}</div><div class="lockic">🔒</div></div>
+    <div class="pw">
+      <h3>月相カードを解放する</h3>
+      <div class="price">${PRICE}</div>
+      <div class="pnote">買い切り · 登録不要</div>
+      <ul>
+        <li><b>3つ</b>の名前すべて（今は1つ）</li>
+        <li>あなたの<b>月相カード</b>——名前・署名・出典</li>
+        <li><b>高解像度</b>PNG + 印刷用PDF</li>
+        <li>スマホ<b>壁紙</b>版</li>
+      </ul>
+      <button class="cta" onclick="unlock()">解放する — ${PRICE}</button>
+      <div class="demo">デモ版 · 決済はまだ未接続</div>
+    </div>`;
+}
+function unlock(){
+  unlocked=true;
+  document.getElementById('pwArea').innerHTML=`
+    <div class="nameopt">
+      <div class="nm">${altNames[0].n}</div>
+      <div class="py">${altNames[0].py} · ${altNames[0].m}</div>
+      <div class="src">${altNames[0].s}</div>
+    </div>
+    <div class="nameopt">
+      <div class="nm">${altNames[1].n}</div>
+      <div class="py">${altNames[1].py} · ${altNames[1].m}</div>
+      <div class="src">${altNames[1].s}</div>
+    </div>
+    <button class="cta" onclick="showCard(freeName)">月相カードをつくる →</button>`;
+}
+function showCard(p){
+  const surname=SURNAMES[Math.floor(Math.random()*SURNAMES.length)];
+  const full=surname+p.n;
+  document.getElementById('ccarve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('cName').textContent=full;
+  document.getElementById('cPy').textContent=p.py.toUpperCase();
+  document.getElementById('cSig').textContent=full;
+  document.getElementById('cType').textContent='性格 · '+curType.name+'  '+code.split('').join(' ');
+  document.getElementById('cDims').textContent=code.split('').map(x=>DIMWORD[x]).join(' · ');
+  document.getElementById('cSrc').textContent='“'+p.n+'” — '+p.m+'. '+p.s;
+  document.getElementById('cGod').textContent='“'+curType.god+'”';
+  document.getElementById('cNo').textContent='No.'+String(Math.floor(Math.random()*9000+1000));
+  show('cardScreen');
+}
+function restart(){code=null;curType=null;unlocked=false;show('intro');}
+function savePNG(){
+  try{
+    var card=document.querySelector('.mcard');
+    var css=document.querySelector('style').textContent;
+    var w=card.offsetWidth,h=card.offsetHeight,S=3;
+    var clone=card.cloneNode(true);
+    clone.style.width=w+'px';clone.style.height=h+'px';clone.style.margin='0';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+(w*S)+'" height="'+(h*S)+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="transform:scale('+S+');transform-origin:top left"><style>'+css+'</style><div style="background:#0d1124;width:'+w+'px;height:'+h+'px">'+clone.outerHTML+'</div></div></foreignObject></svg>';
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas');c.width=w*S;c.height=h*S;
+      c.getContext('2d').drawImage(img,0,0);
+      c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='moon-card.png';a.click();});
+    };
+    img.onerror=function(){alert('このブラウザでは書き出しに対應していません——スクリーンショットをお使いください。');};
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  }catch(e){alert('書き出しに失敗しました——カードをスクリーンショットしてください。');}
+}
+</script>
+</body>
+</html>

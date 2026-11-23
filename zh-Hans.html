@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月相酿名 — 看清你自己，还有你的中文名</title>
+<style>
+  :root{
+    --night:#0d1124; --gold:#d9b877; --cream:#f7f2e8; --muted:#a7adc4;
+    --line:rgba(217,184,119,.25); --card:rgba(255,255,255,.04);
+    --serif:Georgia,"Songti SC","STSong","SimSun","Microsoft YaHei",serif;
+    --script:"KaiTi","STKaiti","Kaiti SC",cursive;
+    --sans:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(900px 600px at 50% 26%, rgba(217,184,119,.09), transparent 62%),
+               linear-gradient(168deg,#151b36,#0d1124 58%,#090c1b);
+    background-attachment:fixed;color:var(--cream);font-family:var(--sans);min-height:100vh;
+  }
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(217,184,119,.12);
+    border-bottom:1px solid var(--line);text-align:center;font-size:12px;letter-spacing:2px;
+    color:var(--gold);padding:9px;backdrop-filter:blur(6px)}
+  .wrap{max-width:480px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;min-height:calc(100vh - 40px)}
+  .screen{display:none;flex:1;padding:30px 0 44px;flex-direction:column;justify-content:center}
+  .screen.active{display:flex}
+  #intro.active{justify-content:flex-start;padding-top:34px}
+  .center{text-align:center}
+  .moon{width:110px;height:110px;margin:0 auto 22px}
+  .moon svg{display:block}
+  .eyebrow{font-size:11px;letter-spacing:5px;color:var(--gold);margin-bottom:16px}
+  h1{font-family:var(--serif);font-size:31px;line-height:1.42;letter-spacing:2px;margin-bottom:16px}
+  h1 .g{color:var(--gold)}
+  .sub{color:var(--muted);font-size:15px;line-height:2}
+  .cta{display:block;width:100%;padding:16px;border-radius:12px;border:1.5px solid var(--gold);
+       background:var(--gold);color:#1a1a26;font-size:15px;font-weight:700;letter-spacing:2px;
+       cursor:pointer;margin-top:24px;font-family:var(--sans)}
+  .cta.ghost{background:transparent;color:var(--gold);margin-top:10px}
+  .cta:active{opacity:.85}
+  .foot{color:#6b6f85;font-size:12px;line-height:1.8;margin-top:18px;text-align:center}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:30px 0 8px;
+         border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
+  .stats div{text-align:center}
+  .stats b{display:block;font-family:var(--serif);font-size:19px;color:var(--gold)}
+  .stats span{font-size:10px;color:var(--muted);letter-spacing:1px}
+
+  .features{margin-top:26px;display:grid;gap:12px}
+  .feat{display:flex;gap:14px;align-items:flex-start;background:var(--card);
+        border:1px solid var(--line);border-radius:14px;padding:16px}
+  .feat .ic{font-size:20px;line-height:1;flex:0 0 auto;margin-top:2px}
+  .feat b{display:block;font-size:14px;margin-bottom:5px;color:var(--cream)}
+  .feat p{font-size:12.5px;line-height:1.8;color:var(--muted)}
+
+  .types{margin-top:30px}
+  .types h2{font-family:var(--serif);font-size:18px;color:var(--cream);text-align:center;margin-bottom:14px;letter-spacing:2px}
+  .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .titem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .titem b{color:var(--gold);font-weight:600}
+
+  .qbar{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .bar{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;background:var(--gold);transition:.3s}
+  .step{font-size:12px;color:var(--muted)}
+  .back{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:var(--sans)}
+  .q{font-family:var(--serif);font-size:21px;line-height:1.7;margin:18px 0 30px;min-height:120px;letter-spacing:1px}
+  .opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;
+       padding:18px 20px;margin-bottom:14px;border-radius:12px;border:1px solid var(--line);
+       background:rgba(255,255,255,.03);color:var(--cream);font-size:15px;line-height:1.7;
+       cursor:pointer;font-family:var(--sans)}
+  .opt:hover{border-color:var(--gold);background:rgba(217,184,119,.08)}
+  .opt .k{color:var(--gold);font-weight:700;flex:0 0 auto}
+
+  .group{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:10px}
+  .tname{font-family:var(--serif);font-size:38px;letter-spacing:6px;margin-bottom:6px}
+  .code{font-size:12px;letter-spacing:6px;color:var(--muted)}
+  .desc{font-size:15px;line-height:2;color:#cfd3e2;margin:20px 0;text-align:left}
+  .say{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:16px 0;text-align:left}
+  .say .who{font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:6px}
+  .say p{font-family:var(--serif);font-size:15px;line-height:1.9;color:#e2e5f0}
+  .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .tag{font-size:11px;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+  .field{margin-bottom:16px;text-align:left}
+  .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:8px}
+  .input{width:100%;height:46px;border-radius:10px;border:1px solid var(--line);
+         background:rgba(255,255,255,.05);color:var(--cream);padding:0 14px;font-size:16px;font-family:var(--sans)}
+  .input:focus{outline:none;border-color:var(--gold)}
+  .seg{display:flex;gap:10px}
+  .seg button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);
+              background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:14px;font-family:var(--sans)}
+  .seg button.on{border-color:var(--gold);color:var(--gold);background:rgba(217,184,119,.1)}
+  .namelist{margin-top:20px}
+  .nameopt{padding:18px 20px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:rgba(255,255,255,.03)}
+  .nameopt .nm{font-family:var(--serif);font-size:26px;letter-spacing:4px;color:var(--cream)}
+  .nameopt .py{font-size:13px;color:var(--gold);letter-spacing:1px;margin:6px 0}
+  .nameopt .src{font-size:12px;color:var(--muted);line-height:1.8}
+
+  .lock{position:relative;overflow:hidden;border-radius:14px;border:1px dashed var(--line);
+        padding:20px;margin-bottom:14px;background:rgba(255,255,255,.02);text-align:center}
+  .lock .blur{filter:blur(5px);opacity:.45;font-family:var(--serif);font-size:22px;color:var(--cream);letter-spacing:3px}
+  .lock .lockic{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px}
+  .pw{border:1px solid var(--gold);border-radius:18px;padding:24px 20px;margin-top:20px;text-align:center;
+      background:linear-gradient(165deg,rgba(217,184,119,.10),rgba(217,184,119,.02))}
+  .pw h3{font-family:var(--serif);font-size:20px;margin-bottom:6px;letter-spacing:2px}
+  .pw .price{font-family:var(--serif);font-size:34px;color:var(--gold);margin:10px 0 2px}
+  .pw .pnote{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .pw ul{list-style:none;text-align:left;margin:14px 0 4px;padding:0}
+  .pw li{font-size:13px;color:#cfd3e2;padding:6px 0 6px 22px;position:relative;line-height:1.6}
+  .pw li:before{content:"✓";position:absolute;left:0;color:var(--gold)}
+  .pw .demo{font-size:11px;color:#6b6f85;margin-top:12px}
+
+  .cardwrap{display:flex;justify-content:center;padding:8px 0 20px}
+  .mcard{width:100%;max-width:360px;aspect-ratio:4/5;border-radius:20px;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,#1b2242,#0e1225 70%);border:1px solid rgba(217,184,119,.4);
+    box-shadow:0 24px 60px rgba(0,0,0,.5);padding:24px 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .mc-inner{position:absolute;inset:12px;border:1px solid rgba(217,184,119,.18);border-radius:14px;pointer-events:none}
+  .mc-phase{width:80px;height:80px;margin:2px 0 8px}
+  .mc-name{font-family:var(--serif);font-size:38px;letter-spacing:8px;color:var(--cream);line-height:1.2}
+  .mc-py{font-size:11px;letter-spacing:2px;color:var(--gold);margin-top:4px}
+  .mc-sig{font-family:var(--script);font-size:26px;color:var(--gold);transform:rotate(-5deg)}
+  .mc-div{width:52px;height:1px;background:rgba(217,184,119,.4);margin:10px 0}
+  .mc-type{font-size:11px;letter-spacing:1.5px;color:var(--gold)}
+  .mc-dims{font-size:9.5px;color:var(--muted);margin-top:4px}
+  .mc-src{font-size:10.5px;line-height:1.65;color:#cfd3e2;margin-top:8px}
+  .mc-god{font-family:var(--serif);font-size:11.5px;line-height:1.7;color:#e2e5f0;margin-top:8px}
+  .mc-foot{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:space-between;
+           padding:0 24px;font-size:9.5px;letter-spacing:1.5px;color:rgba(217,184,119,.7)}
+</style>
+</head>
+<body>
+
+<div class="topbar">免费 · 5 分钟 · 免注册</div>
+
+<div class="wrap">
+
+  <section class="screen active" id="intro">
+    <div class="center">
+      <div class="moon">
+        <svg viewBox="0 0 100 100" width="110" height="110">
+          <defs><mask id="m0"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="38" fill="white"/><circle cx="72" cy="50" r="38" fill="black"/></mask></defs>
+          <circle cx="50" cy="50" r="50" fill="none" stroke="rgba(217,184,119,.3)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="38" fill="#d9b877" mask="url(#m0)"/>
+        </svg>
+      </div>
+      <div class="eyebrow">月相酿名</div>
+      <h1>看清真正的你 ——<br><span class="g">还有你的中文名字。</span></h1>
+      <p class="sub">回答 32 道题，找到你的月相。<br>接着由月相姑娘，为你「酿」一个中文名——<br>每个名字都出自真实典籍。</p>
+      <button class="cta" onclick="start()">开始测试 →</button>
+      <button class="cta ghost" onclick="scrollTypes()">看看 16 型</button>
+    </div>
+
+    <div class="stats">
+      <div><b>32</b><span>道题</span></div>
+      <div><b>16</b><span>种人格</span></div>
+      <div><b>8</b><span>个月相</span></div>
+      <div><b>¥0</b><span>即可开始</span></div>
+    </div>
+
+    <div class="features">
+      <div class="feat"><div class="ic">📖</div><div><b>出处真实</b><p>每个名字都能追溯到《诗经》《楚辞》或唐诗宋词。我们从不编造。</p></div></div>
+      <div class="feat"><div class="ic">🌙</div><div><b>是一个人在陪你</b><p>月相姑娘陪你走完——不是又一个计算器。</p></div></div>
+      <div class="feat"><div class="ic">🎴</div><div><b>带得走的东西</b><p>你不只是拿到几个字母，你拿到一张月相卡。</p></div></div>
+      <div class="feat"><div class="ic">🔒</div><div><b>隐私优先</b><p>全部在你的浏览器里跑。不要邮箱、不用注册、不追踪。</p></div></div>
+    </div>
+
+    <div class="types" id="types">
+      <h2>认识这 16 型</h2>
+      <div class="tgrid">
+        <div class="titem"><b>军师</b> INTJ</div><div class="titem"><b>智者</b> INTP</div>
+        <div class="titem"><b>主帅</b> ENTJ</div><div class="titem"><b>辩才</b> ENTP</div>
+        <div class="titem"><b>提灯人</b> INFJ</div><div class="titem"><b>诗人</b> INFP</div>
+        <div class="titem"><b>引路者</b> ENFJ</div><div class="titem"><b>游侠</b> ENFP</div>
+        <div class="titem"><b>守序者</b> ISTJ</div><div class="titem"><b>守护者</b> ISFJ</div>
+        <div class="titem"><b>掌事者</b> ESTJ</div><div class="titem"><b>东道主</b> ESFJ</div>
+        <div class="titem"><b>巧匠</b> ISTP</div><div class="titem"><b>画者</b> ISFP</div>
+        <div class="titem"><b>先锋</b> ESTP</div><div class="titem"><b>名伶</b> ESFP</div>
+      </div>
+    </div>
+
+    <p class="foot">本测试为自我关怀与情绪陪伴的趣味参考，<br>不构成任何医疗、心理或理财建议。</p>
+  </section>
+
+  <section class="screen" id="quiz">
+    <div class="qbar">
+      <button class="back" onclick="back()">返回</button>
+      <div class="bar"><span id="fill"></span></div>
+      <span class="step" id="step"></span>
+    </div>
+    <div class="q" id="qtext"></div>
+    <button class="opt" onclick="choose('a')"><span class="k">A</span><span id="optA"></span></button>
+    <button class="opt" onclick="choose('b')"><span class="k">B</span><span id="optB"></span></button>
+  </section>
+
+  <section class="screen" id="result">
+    <div class="center">
+      <div class="moon" style="width:140px;height:140px">
+        <svg viewBox="0 0 100 100" width="140" height="140">
+          <defs>
+            <mask id="m1"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="carve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG)" mask="url(#m1)"/>
+        </svg>
+      </div>
+      <div class="group" id="rgroup"></div>
+      <div class="tname" id="rname"></div>
+      <div class="code" id="rcode"></div>
+    </div>
+    <p class="desc" id="rdesc"></p>
+    <div class="tags" id="rtags"></div>
+    <div class="say"><div><div class="who">月相姑娘 说</div><p id="rgod"></p></div></div>
+    <button class="cta" onclick="toNaming()">让月相姑娘为你酿个名字 →</button>
+  </section>
+
+  <section class="screen" id="naming">
+    <div class="center" style="margin-bottom:20px">
+      <div class="eyebrow">第二步 · 酿名</div>
+      <h1 style="font-size:24px;margin-bottom:8px">你的名字是？</h1>
+      <p class="sub" style="font-size:14px">月相姑娘会按你的性格，为你酿一个中文名。</p>
+    </div>
+    <div class="field">
+      <label>你的英文名（可选，用于参考发音）</label>
+      <input class="input" id="enname" placeholder="例如 Emma" />
+    </div>
+    <div class="field">
+      <label>气质</label>
+      <div class="seg">
+        <button id="segF" onclick="setG('F')">偏柔</button>
+        <button id="segM" class="on" onclick="setG('M')">偏刚</button>
+      </div>
+    </div>
+    <button class="cta" onclick="generate()">开始酿名</button>
+    <div class="namelist" id="namelist"></div>
+    <div id="pwArea"></div>
+    <p class="foot" id="namingFoot" style="display:none">每个名字都附上真实出处，取自《诗经》《楚辞》与唐诗宋词。</p>
+  </section>
+
+  <section class="screen" id="cardScreen">
+    <div class="center" style="margin-bottom:14px">
+      <div class="eyebrow">你的月相卡</div>
+    </div>
+    <div class="cardwrap">
+      <div class="mcard"><div class="mc-inner"></div>
+        <svg class="mc-phase" viewBox="0 0 100 100">
+          <defs>
+            <mask id="m2"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="ccarve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG2" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG2)" mask="url(#m2)"/>
+        </svg>
+        <div class="mc-name" id="cName"></div>
+        <div class="mc-py" id="cPy"></div>
+        <div class="mc-sig" id="cSig"></div>
+        <div class="mc-div"></div>
+        <div class="mc-type" id="cType"></div>
+        <div class="mc-dims" id="cDims"></div>
+        <div class="mc-src" id="cSrc"></div>
+        <div class="mc-god" id="cGod"></div>
+        <div class="mc-foot"><span id="cNo"></span><span>月相姑娘</span></div>
+      </div>
+    </div>
+    <button class="cta" onclick="savePNG()">⬇ 保存月相卡（PNG）</button>
+    <button class="cta ghost" onclick="toNaming()">换一个名字</button>
+    <button class="cta ghost" onclick="restart()">重新测一次</button>
+    <p class="foot">若下载失败，截图也可以。</p>
+  </section>
+
+</div>
+
+<script>
+const BANK={
+ EI:[
+  {q:"周末的夜晚，你更想——",a:["约上朋友，出去热闹一下","E"],b:["待在自己的小世界，谁也别打扰","I"]},
+  {q:"受了委屈，你通常会——",a:["找个人说说，说出来才舒服","E"],b:["先自己消化，不想麻烦别人","I"]},
+  {q:"到了陌生的场合，你一般——",a:["主动去认识人","E"],b:["先安静观察，等别人来找你","I"]},
+  {q:"累了一天，让你回血的是——",a:["和人聊聊天、热闹一下","E"],b:["独处一会儿，谁都不见","I"]},
+  {q:"一群人聊天时，你通常是——",a:["话多的那个","E"],b:["听得多的那个","I"]},
+  {q:"想到一个新点子，你会——",a:["马上说出来，边说边想","E"],b:["先在心里过一遍，想清楚再说","I"]},
+  {q:"手机响了一声，你——",a:["立刻想看看是谁","E"],b:["不急，晚点再看","I"]},
+  {q:"面对一整天的社交安排，你——",a:["很期待，越热闹越好","E"],b:["有点累，希望留点独处时间","I"]}
+ ],
+ SN:[
+  {q:"面对一件「几乎不可能」、但你很想做的事——",a:["先试了再说，万一行呢","N"],b:["先算清代价，再决定动不动","S"]},
+  {q:"做判断时，你更相信——",a:["心里那点说不清的直觉","N"],b:["摆在眼前的事实和数字","S"]},
+  {q:"聊到「未来」，你更常——",a:["畅想很远的事","N"],b:["关注眼前这一步怎么走","S"]},
+  {q:"看一部电影，你更在意——",a:["它想表达什么","N"],b:["故事好不好看、细节真不真","S"]},
+  {q:"描述一件事，你倾向于——",a:["先说它「像什么」、打个比方","N"],b:["先把具体过程讲清楚","S"]},
+  {q:"一个新东西摆在你面前，你——",a:["先想它还能用来做什么","N"],b:["先看它现在是怎么运作的","S"]},
+  {q:"你更喜欢的聊天是——",a:["聊想法、聊可能性","N"],b:["聊具体的事、聊经验","S"]},
+  {q:"做计划时，你——",a:["先想大方向，细节到时再说","N"],b:["先把具体步骤排好","S"]}
+ ],
+ TF:[
+  {q:"朋友半夜找你诉苦——",a:["陪到他讲完为止","F"],b:["安慰几句，先顾好明天的自己","T"]},
+  {q:"看到有人被欺负——",a:["会站出来，哪怕惹上麻烦","F"],b:["先旁观，别把自己搭进去","T"]},
+  {q:"大家一起分好处，你通常——",a:["先想别人够不够","F"],b:["先保证自己不吃亏","T"]},
+  {q:"做决定时，你更看重——",a:["它对人公不公平、暖不暖","F"],b:["它合不合逻辑、高不高效","T"]},
+  {q:"有人当面批评你——",a:["先觉得受伤、有点难过","F"],b:["先分析他说得对不对","T"]},
+  {q:"你更容易被什么打动——",a:["一个真诚的故事","F"],b:["一个漂亮的道理","T"]},
+  {q:"帮别人做选择时，你会——",a:["先想他心里舒不舒服","F"],b:["先想哪个方案最有效","T"]},
+  {q:"两个人吵架，你更像——",a:["从中调和、照顾双方情绪的那个人","F"],b:["就事论事、指出谁对谁错的那个人","T"]}
+ ],
+ JP:[
+  {q:"出门旅行前，你——",a:["会把行程安排得清清楚楚","J"],b:["大概定个方向，到了再随机应变","P"]},
+  {q:"一件事没做完，你——",a:["心里放不下，非得做完才舒坦","J"],b:["可以先搁着，回头再说","P"]},
+  {q:"你的桌子或房间，多半——",a:["东西各归其位、有条理","J"],b:["有点乱，但我自己找得到","P"]},
+  {q:"面对「死线」，你——",a:["会提前很久就开始做","J"],b:["常常临近了才发力","P"]},
+  {q:"计划突然被打乱，你——",a:["有点烦躁，想把它掰回原样","J"],b:["无所谓，说不定还更好玩","P"]},
+  {q:"做决定时，你更倾向于——",a:["尽快定下来，定完才安心","J"],b:["多留一会儿，看看有没有更好的","P"]},
+  {q:"你更喜欢——",a:["事先说好的安排","J"],b:["保留一些「到时候再说」的余地","P"]},
+  {q:"别人临时约你，你——",a:["更希望提前打好招呼","J"],b:["随时都行，说走就走","P"]}
+ ]
+};
+const QUESTIONS=[];
+for(let i=0;i<8;i++){['EI','SN','TF','JP'].forEach(d=>{const it=BANK[d][i];QUESTIONS.push({dim:d,q:it.q,a:{t:it.a[0],v:it.a[1]},b:{t:it.b[0],v:it.b[1]}});});}
+const DIMWORD={E:"外向",I:"内向",S:"实感",N:"直觉",T:"思考",F:"情感",J:"判断",P:"知觉"};
+const CARVE={"new":50,"waxing-crescent":27,"first-quarter":4,"waxing-gibbous":-22,"full":-300,
+             "waning-gibbous":122,"last-quarter":96,"waning-crescent":73};
+
+const TYPES={
+ INTJ:{group:"谋略组 · NT",name:"军师",ph:"new",desc:"你习惯站在远处看棋局，看得比大多数人都远。你喜欢把混乱整理成秩序，把模糊变成清晰。别人觉得你冷静，其实你只是把该想的都提前想过了。",god:"你看得那么远，也别忘了看看脚下的月光。"},
+ INTP:{group:"谋略组 · NT",name:"智者",ph:"new",desc:"你对「为什么」永远好奇。你不太在意表面的热闹，只在意事情背后的原理。你的世界很大，几乎都装在心里。",god:"你的脑子里藏着整片星空——今晚，也出来透透气吧。"},
+ ENTJ:{group:"谋略组 · NT",name:"主帅",ph:"waxing-gibbous",desc:"你天生就知道该往哪走，也敢带着一群人往那走。你果断、直接，不喜欢拖泥带水。",god:"你带着很多人往前走——记得，也给自己留个歇脚的地方。"},
+ ENTP:{group:"谋略组 · NT",name:"辩才",ph:"waxing-gibbous",desc:"你喜欢挑战一切「理所当然」。你的脑子转得飞快，总能看到别人没想到的角度。",god:"你把世界都问了一遍——有些答案，月亮会慢慢给你。"},
+ INFJ:{group:"理想组 · NF",name:"提灯人",ph:"waning-gibbous",desc:"你安静，却能一眼看穿别人的心事。你总在悄悄为别人点灯，自己的黑却很少说出口。",god:"你替那么多人掌过灯——今晚，让我来照亮你。"},
+ INFP:{group:"理想组 · NF",name:"诗人",ph:"waning-gibbous",desc:"你心里住着另一个世界，柔软、辽阔、不肯妥协。你在意的从来不是输赢，而是真不真。",god:"你守住了心里那个世界——累了，就靠在我这儿歇歇。"},
+ ENFJ:{group:"理想组 · NF",name:"引路者",ph:"full",desc:"你天生擅长点燃别人。你把大家聚在一起，让每个人都觉得自己被看见。",god:"你照亮了那么多人——也让我，照亮你一次。"},
+ ENFP:{group:"理想组 · NF",name:"游侠",ph:"full",desc:"你热情、自由，对世界永远热泪盈眶。你走到哪，就把光带到哪。",god:"你跑得那么快、那么亮——偶尔，也停下来看看月亮。"},
+ ISTJ:{group:"守护组 · SJ",name:"守序者",ph:"waning-crescent",desc:"你靠谱到让人安心。答应过的事，你一定会做到；该守的规矩，你从不含糊。",god:"你把承诺一件件兑现——今晚，什么都不用做，我陪着你。"},
+ ISFJ:{group:"守护组 · SJ",name:"守护者",ph:"last-quarter",desc:"你默默扛下很多，却很少喊累。你记得每个人的喜好，也照顾着所有人的感受。",god:"你照顾了所有人——也别忘了，你自己也值得被照顾。"},
+ ESTJ:{group:"守护组 · SJ",name:"掌事者",ph:"waxing-crescent",desc:"有你在，事情就不会乱。你务实、果断，天生就是定规矩、把局面撑住的那个人。",god:"你撑起了那么多场面——今晚，让我替你守一会儿。"},
+ ESFJ:{group:"守护组 · SJ",name:"东道主",ph:"first-quarter",desc:"你让每个人都感到被欢迎、被照顾。你的热情不吵闹，却很暖。",god:"你把每个人都照顾到了——也让我，照顾照顾你。"},
+ ISTP:{group:"探索组 · SP",name:"巧匠",ph:"waning-crescent",desc:"你不爱多说，却什么都会修、都会做。你用行动，而不是语言，去解决问题。",god:"你总在动手、总在解决——今晚，把工具放下，歇一歇。"},
+ ISFP:{group:"探索组 · SP",name:"画者",ph:"last-quarter",desc:"你安静、随和，却对美与感受格外敏锐。你活在此刻，也把此刻过得很美。",god:"你把日子过成了画——今晚，也为自己留一格空白。"},
+ ESTP:{group:"探索组 · SP",name:"先锋",ph:"waxing-crescent",desc:"你先冲了再说。你对世界充满好奇，行动永远快过犹豫。",god:"你冲得那么快——偶尔，也停下来看看身后的月亮。"},
+ ESFP:{group:"探索组 · SP",name:"名伶",ph:"first-quarter",desc:"你走到哪儿，哪儿就是舞台。你热烈、真诚，能让人忍不住笑出来。",god:"你把快乐分给了所有人——今晚，留一点给自己。"}
+};
+
+const SURNAMES=["陈","林","苏","沈","顾","陆","江","许","宋","温","叶","白","程","萧","余","钟","季","闻","黎","谢"];
+const NAMES={
+ NT:[
+  {n:"睿",py:"rui4",m:"明智通达",s:"《说文解字》：「睿，深明也，通也。」"},
+  {n:"修远",py:"xiu1 yuan3",m:"前路修长，求索不止",s:"《楚辞·离骚》：「路漫漫其修远兮，吾将上下而求索。」"},
+  {n:"景行",py:"jing3 xing2",m:"光明大道",s:"《诗经·小雅·车舝》：「高山仰止，景行行止。」"},
+  {n:"如琢",py:"ru2 zhuo2",m:"精雕细琢",s:"《诗经·卫风·淇奥》：「如切如磋，如琢如磨。」"},
+  {n:"维新",py:"wei2 xin1",m:"日新又新",s:"《诗经·大雅·文王》：「周虽旧邦，其命维新。」"},
+  {n:"明哲",py:"ming2 zhe2",m:"明达而有智慧",s:"《诗经·大雅·烝民》：「既明且哲，以保其身。」"},
+  {n:"博学",py:"bo2 xue2",m:"学识广博",s:"《礼记·中庸》：「博学之，审问之，慎思之，明辨之，笃行之。」"},
+  {n:"慎思",py:"shen4 si1",m:"审慎思虑",s:"《礼记·中庸》：「博学之，审问之，慎思之，明辨之，笃行之。」"},
+  {n:"明辨",py:"ming2 bian4",m:"明晰辨别",s:"《礼记·中庸》：「博学之，审问之，慎思之，明辨之，笃行之。」"},
+  {n:"笃行",py:"du3 xing2",m:"切实力行",s:"《礼记·中庸》：「博学之，审问之，慎思之，明辨之，笃行之。」"},
+  {n:"弘毅",py:"hong2 yi4",m:"宽宏刚毅",s:"《论语·泰伯》：「士不可以不弘毅，任重而道远。」"},
+  {n:"道远",py:"dao4 yuan3",m:"任重道远",s:"《论语·泰伯》：「士不可以不弘毅，任重而道远。」"},
+  {n:"知新",py:"zhi1 xin1",m:"温故知新",s:"《论语·为政》：「温故而知新，可以为师矣。」"},
+  {n:"思齐",py:"si1 qi2",m:"见贤思齐",s:"《论语·里仁》：「见贤思齐焉，见不贤而内自省也。」"},
+  {n:"自强",py:"zi4 qiang2",m:"自强不息",s:"《周易·乾》：「天行健，君子以自强不息。」"},
+  {n:"行健",py:"xing2 jian4",m:"运行刚健",s:"《周易·乾》：「天行健，君子以自强不息。」"},
+  {n:"谦益",py:"qian1 yi4",m:"谦虚受益",s:"《尚书·大禹谟》：「满招损，谦受益。」"},
+  {n:"兼济",py:"jian1 ji4",m:"兼济天下",s:"《孟子·尽心上》：「穷则独善其身，达则兼济天下。」"},
+  {n:"如圭",py:"ru2 gui1",m:"如玉之洁",s:"《诗经·卫风·淇奥》：「如金如锡，如圭如璧。」"},
+  {n:"攻玉",py:"gong1 yu4",m:"切磋琢磨",s:"《诗经·小雅·鹤鸣》：「它山之石，可以攻玉。」"},
+ ],
+ NF:[
+  {n:"兰",py:"lan2",m:"香草，高洁",s:"《楚辞·九歌·湘夫人》：「沅有芷兮澧有兰。」"},
+  {n:"芷",py:"zhi3",m:"香草，清芬",s:"《楚辞·九歌·湘夫人》：「沅有芷兮澧有兰。」"},
+  {n:"清",py:"qing1",m:"清澈自守",s:"《楚辞·渔父》：「沧浪之水清兮，可以濯吾缨。」"},
+  {n:"明月",py:"ming2 yue4",m:"皎洁明亮",s:"唐·张九龄《望月怀远》：「海上生明月，天涯共此时。」"},
+  {n:"云起",py:"yun2 qi3",m:"从容自在",s:"唐·王维《终南别业》：「行到水穷处，坐看云起时。」"},
+  {n:"子衿",py:"zi3 jin1",m:"学子衣襟，文雅",s:"《诗经·郑风·子衿》：「青青子衿，悠悠我心。」"},
+  {n:"蒹葭",py:"jian1 jia1",m:"秋水伊人",s:"《诗经·秦风·蒹葭》：「蒹葭苍苍，白露为霜。」"},
+  {n:"春晓",py:"chun1 xiao3",m:"春晨清新",s:"唐·孟浩然《春晓》：「春眠不觉晓，处处闻啼鸟。」"},
+  {n:"采薇",py:"cai3 wei1",m:"杨柳依依",s:"《诗经·小雅·采薇》：「昔我往矣，杨柳依依。」"},
+  {n:"依依",py:"yi1 yi1",m:"依依不舍",s:"《诗经·小雅·采薇》：「昔我往矣，杨柳依依。」"},
+  {n:"琴瑟",py:"qin2 se4",m:"琴瑟和鸣",s:"《诗经·周南·关雎》：「窈窕淑女，琴瑟友之。」"},
+  {n:"静好",py:"jing4 hao3",m:"岁月静好",s:"《诗经·郑风·女曰鸡鸣》：「琴瑟在御，莫不静好。」"},
+  {n:"悠悠",py:"you1 you1",m:"情思悠长",s:"《诗经·郑风·子衿》：「青青子衿，悠悠我心。」"},
+  {n:"婉如",py:"wan3 ru2",m:"温柔美好",s:"《诗经·郑风·野有蔓草》：「有美一人，婉如清扬。」"},
+  {n:"清扬",py:"qing1 yang2",m:"眉目清朗",s:"《诗经·郑风·野有蔓草》：「有美一人，婉如清扬。」"},
+  {n:"轻舟",py:"qing1 zhou1",m:"轻快自在",s:"唐·李白《早发白帝城》：「轻舟已过万重山。」"},
+  {n:"疏影",py:"shu1 ying3",m:"疏淡清雅",s:"宋·林逋《山园小梅》：「疏影横斜水清浅，暗香浮动月黄昏。」"},
+  {n:"暗香",py:"an4 xiang1",m:"暗香浮动",s:"宋·林逋《山园小梅》：「疏影横斜水清浅，暗香浮动月黄昏。」"},
+  {n:"若邻",py:"ruo4 lin2",m:"天涯比邻",s:"唐·王勃《送杜少府之任蜀州》：「海内存知己，天涯若比邻。」"},
+  {n:"呦呦",py:"you1 you1",m:"鹿鸣呦呦",s:"《诗经·小雅·鹿鸣》：「呦呦鹿鸣，食野之苹。」"},
+ ],
+ SJ:[
+  {n:"恒",py:"heng2",m:"长久不变",s:"《诗经·小雅·天保》：「如月之恒，如日之升。」"},
+  {n:"淑",py:"shu1",m:"温和善良",s:"《诗经·周南·关雎》：「窈窕淑女，君子好逑。」"},
+  {n:"坦",py:"tan3",m:"坦荡从容",s:"《论语·述而》：「君子坦荡荡，小人长戚戚。」"},
+  {n:"清泉",py:"qing1 quan2",m:"清冽明净",s:"唐·王维《山居秋暝》：「明月松间照，清泉石上流。」"},
+  {n:"白露",py:"bai2 lu4",m:"秋意清润",s:"《诗经·秦风·蒹葭》：「蒹葭苍苍，白露为霜。」"},
+  {n:"安",py:"an1",m:"安宁踏实",s:"《诗经·小雅·常棣》：「丧乱既平，既安且宁。」"},
+  {n:"静女",py:"jing4 nv3",m:"娴静美好",s:"《诗经·邶风·静女》：「静女其姝，俟我于城隅。」"},
+  {n:"其姝",py:"qi2 shu1",m:"美好可爱",s:"《诗经·邶风·静女》：「静女其姝，俟我于城隅。」"},
+  {n:"温良",py:"wen1 liang2",m:"温和良善",s:"《论语·学而》：「夫子温良恭俭让以得之。」"},
+  {n:"宁",py:"ning2",m:"安宁平静",s:"《诗经·小雅·常棣》：「丧乱既平，既安且宁。」"},
+  {n:"守拙",py:"shou3 zhuo1",m:"守朴归真",s:"晋·陶渊明《归园田居》：「开荒南野际，守拙归园田。」"},
+  {n:"悠然",py:"you1 ran2",m:"悠然自得",s:"晋·陶渊明《饮酒》：「采菊东篱下，悠然见南山。」"},
+  {n:"知足",py:"zhi1 zu2",m:"知足常乐",s:"《老子》：「知足者富。」"},
+  {n:"抱朴",py:"bao4 pu3",m:"抱朴守真",s:"《老子》：「见素抱朴，少私寡欲。」"},
+  {n:"见素",py:"jian4 su4",m:"本色纯净",s:"《老子》：「见素抱朴，少私寡欲。」"},
+  {n:"温故",py:"wen1 gu4",m:"温习旧知",s:"《论语·为政》：「温故而知新，可以为师矣。」"},
+  {n:"慎独",py:"shen4 du2",m:"自律谨慎",s:"《礼记·中庸》：「君子慎其独也。」"},
+  {n:"乐群",py:"le4 qun2",m:"合群乐交",s:"《礼记·学记》：「敬业乐群。」"},
+  {n:"敬业",py:"jing4 ye4",m:"专注认真",s:"《礼记·学记》：「敬业乐群。」"},
+  {n:"素心",py:"su4 xin1",m:"心地素朴",s:"晋·陶渊明《移居》：「闻多素心人，乐与数晨夕。」"},
+ ],
+ SP:[
+  {n:"川",py:"chuan1",m:"奔流不息",s:"《论语·子罕》：「子在川上曰：逝者如斯夫，不舍昼夜。」"},
+  {n:"行",py:"xing2",m:"践行向前",s:"《诗经·小雅·车舝》：「高山仰止，景行行止。」"},
+  {n:"苍苍",py:"cang1 cang1",m:"辽阔苍茫",s:"《诗经·秦风·蒹葭》：「蒹葭苍苍，白露为霜。」"},
+  {n:"长风",py:"chang2 feng1",m:"乘风万里",s:"唐·李白《行路难》：「长风破浪会有时，直挂云帆济沧海。」"},
+  {n:"千帆",py:"qian1 fan1",m:"千帆竞发",s:"唐·刘禹锡：「沉舟侧畔千帆过，病树前头万木春。」"},
+  {n:"无晴",py:"wu2 qing2",m:"宠辱不惊",s:"宋·苏轼《定风波》：「回首向来萧瑟处，归去，也无风雨也无晴。」"},
+  {n:"直挂",py:"zhi2 gua4",m:"直挂云帆",s:"唐·李白《行路难》：「长风破浪会有时，直挂云帆济沧海。」"},
+  {n:"云帆",py:"yun2 fan1",m:"云帆济海",s:"唐·李白《行路难》：「直挂云帆济沧海。」"},
+  {n:"破浪",py:"po4 lang4",m:"破浪前行",s:"唐·李白《行路难》：「长风破浪会有时。」"},
+  {n:"千里",py:"qian1 li3",m:"志在千里",s:"《荀子·劝学》：「不积跬步，无以至千里。」"},
+  {n:"行行",py:"xing2 xing2",m:"行而不辍",s:"《古诗十九首》：「行行重行行，与君生别离。」"},
+  {n:"快哉",py:"kuai4 zai1",m:"畅快淋漓",s:"宋·苏轼《水调歌头》：「一点浩然气，千里快哉风。」"},
+  {n:"浩然",py:"hao4 ran2",m:"浩然正气",s:"《孟子·公孙丑》：「我善养吾浩然之气。」"},
+  {n:"乘风",py:"cheng2 feng1",m:"御风而行",s:"宋·苏轼《水调歌头》：「我欲乘风归去。」"},
+  {n:"东篱",py:"dong1 li2",m:"东篱采菊",s:"晋·陶渊明《饮酒》：「采菊东篱下，悠然见南山。」"},
+  {n:"星野",py:"xing1 ye3",m:"星垂平野",s:"唐·杜甫《旅夜书怀》：「星垂平野阔，月涌大江流。」"},
+  {n:"平野",py:"ping2 ye3",m:"胸怀旷达",s:"唐·杜甫《旅夜书怀》：「星垂平野阔，月涌大江流。」"},
+  {n:"逍遥",py:"xiao1 yao2",m:"自在无拘",s:"《庄子·逍遥游》：「若夫乘天地之正，而御六气之辩，以游无穷者。」"},
+  {n:"扶摇",py:"fu2 yao2",m:"扶摇直上",s:"《庄子·逍遥游》：「抟扶摇而上者九万里。」"},
+  {n:"明德",py:"ming2 de2",m:"光明德行",s:"《礼记·大学》：「大学之道，在明明德。」"},
+ ],
+};
+
+const PRICE="¥29";
+
+let idx=0, log=[], code=null, curType=null, curGroup=null, gender='M', unlocked=false, freeName=null, altNames=[];
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); window.scrollTo(0,0);}
+function scrollTypes(){document.getElementById('types').scrollIntoView({behavior:'smooth'});}
+function start(){idx=0;log=[];render();show('quiz');}
+function back(){if(idx>0){idx--;log.pop();render();}else{show('intro');}}
+function render(){
+  const q=QUESTIONS[idx];
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('optA').textContent=q.a.t;
+  document.getElementById('optB').textContent=q.b.t;
+  document.getElementById('step').textContent=(idx+1)+' / '+QUESTIONS.length;
+  document.getElementById('fill').style.width=(idx/QUESTIONS.length*100)+'%';
+}
+function choose(k){
+  const q=QUESTIONS[idx];log.push({dim:q.dim,v:k==='a'?q.a.v:q.b.v});idx++;
+  if(idx<QUESTIONS.length){render();}else{document.getElementById('fill').style.width='100%';finish();}
+}
+function score(){
+  const c={},last={};
+  log.forEach(o=>{c[o.v]=(c[o.v]||0)+1;last[o.dim]=o.v;});
+  const pick=(a,b,dim)=>((c[a]||0)>(c[b]||0))?a:((c[b]||0)>(c[a]||0))?b:(last[dim]||a);
+  return pick('E','I','EI')+pick('S','N','SN')+pick('T','F','TF')+pick('J','P','JP');
+}
+function finish(){
+  code=score();curType=TYPES[code];
+  curGroup = code.includes('N') ? (code.includes('T')?'NT':'NF') : (code.includes('T')?'SP':'SJ');
+  document.getElementById('carve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('rgroup').textContent=curType.group;
+  document.getElementById('rname').textContent=curType.name;
+  document.getElementById('rcode').textContent=code.split('').join(' ');
+  document.getElementById('rdesc').textContent=curType.desc;
+  document.getElementById('rgod').textContent='「'+curType.god+'」';
+  document.getElementById('rtags').innerHTML=code.split('').map(x=>'<span class="tag">'+DIMWORD[x]+'</span>').join('');
+  show('result');
+}
+function pick(arr,n){const a=arr.slice();const out=[];
+  while(a.length && out.length<n){out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);} return out;}
+function toNaming(){
+  if(!code){show('intro');return;}
+  unlocked=false;
+  document.getElementById('namelist').innerHTML='';
+  document.getElementById('pwArea').innerHTML='';
+  document.getElementById('namingFoot').style.display='none';
+  show('naming');
+}
+function setG(g){gender=g;
+  document.getElementById('segM').classList.toggle('on', g==='M');
+  document.getElementById('segF').classList.toggle('on', g==='F');}
+function generate(){
+  const pool=NAMES[curGroup]||NAMES.NF;
+  const picks=pick(pool,3);
+  freeName=picks[0]; altNames=[picks[1],picks[2]];
+  document.getElementById('namelist').innerHTML=
+    '<div class="nameopt"><div class="nm">'+freeName.n+'</div><div class="py">'+freeName.py+' · '+freeName.m+'</div><div class="src">'+freeName.s+'</div></div>';
+  document.getElementById('namingFoot').style.display='block';
+  renderPaywall();
+}
+function renderPaywall(){
+  document.getElementById('pwArea').innerHTML=
+    '<div class="lock"><div class="blur">'+altNames[0].n+' · '+altNames[1].n+'</div><div class="lockic">🔒</div></div>'+
+    '<div class="pw">'+
+      '<h3>解锁你的月相卡</h3>'+
+      '<div class="price">'+PRICE+'</div>'+
+      '<div class="pnote">一次性 · 无需注册</div>'+
+      '<ul>'+
+        '<li>全部 <b>3</b> 个名字（你只看到 1 个）</li>'+
+        '<li>你的<b>月相卡</b>——名字、签名与出处</li>'+
+        '<li><b>高清</b> PNG + 可打印 PDF</li>'+
+        '<li>手机<b>壁纸</b>版</li>'+
+      '</ul>'+
+      '<button class="cta" onclick="unlock()">解锁 — '+PRICE+'</button>'+
+      '<div class="demo">示范版 · 尚未接通付款</div>'+
+    '</div>';
+}
+function unlock(){
+  unlocked=true;
+  document.getElementById('pwArea').innerHTML=
+    '<div class="nameopt"><div class="nm">'+altNames[0].n+'</div><div class="py">'+altNames[0].py+' · '+altNames[0].m+'</div><div class="src">'+altNames[0].s+'</div></div>'+
+    '<div class="nameopt"><div class="nm">'+altNames[1].n+'</div><div class="py">'+altNames[1].py+' · '+altNames[1].m+'</div><div class="src">'+altNames[1].s+'</div></div>'+
+    '<button class="cta" onclick="showCard(freeName)">生成我的月相卡 →</button>';
+}
+function showCard(p){
+  const surname=SURNAMES[Math.floor(Math.random()*SURNAMES.length)];
+  const full=surname+p.n;
+  document.getElementById('ccarve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('cName').textContent=full;
+  document.getElementById('cPy').textContent=p.py.toUpperCase();
+  document.getElementById('cSig').textContent=full;
+  document.getElementById('cType').textContent='性格 · '+curType.name+'  '+code.split('').join(' ');
+  document.getElementById('cDims').textContent=code.split('').map(x=>DIMWORD[x]).join(' · ');
+  document.getElementById('cSrc').textContent='「'+p.n+'」'+p.m+' —— '+p.s;
+  document.getElementById('cGod').textContent='「'+curType.god+'」';
+  document.getElementById('cNo').textContent='No.'+String(Math.floor(Math.random()*9000+1000));
+  show('cardScreen');
+}
+function restart(){code=null;curType=null;unlocked=false;show('intro');}
+function savePNG(){
+  try{
+    var card=document.querySelector('.mcard');
+    var css=document.querySelector('style').textContent;
+    var w=card.offsetWidth,h=card.offsetHeight,S=3;
+    var clone=card.cloneNode(true);
+    clone.style.width=w+'px';clone.style.height=h+'px';clone.style.margin='0';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+(w*S)+'" height="'+(h*S)+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="transform:scale('+S+');transform-origin:top left"><style>'+css+'</style><div style="background:#0d1124;width:'+w+'px;height:'+h+'px">'+clone.outerHTML+'</div></div></foreignObject></svg>';
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas');c.width=w*S;c.height=h*S;
+      c.getContext('2d').drawImage(img,0,0);
+      c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='moon-card.png';a.click();});
+    };
+    img.onerror=function(){alert('此浏览器不支持导出，请直接截图。');};
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  }catch(e){alert('导出失败，请直接截图。');}
+}
+</script>
+</body>
+</html>

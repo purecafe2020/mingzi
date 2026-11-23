@@ -1,130 +1,583 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mingzi — Your name, in real Chinese. Free Chinese name generator with meaning.</title>
-<meta name="description" content="Type your English name and get a real Chinese name: a proper surname that echoes your name, a two-character given name chosen for meaning and tone flow, checked for cultural safety. Free, instant, no sign-up.">
-<link rel="canonical" href="https://879879.xyz/">
-<link rel="stylesheet" href="assets/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna's Naming — Discover your Chinese name</title>
+<style>
+  :root{
+    --night:#0d1124; --gold:#d9b877; --cream:#f7f2e8; --muted:#a7adc4;
+    --line:rgba(217,184,119,.25); --card:rgba(255,255,255,.04);
+    --serif:Georgia,"Times New Roman","Songti SC","SimSun",serif;
+    --script:"Brush Script MT","Segoe Script",cursive;
+    --sans:-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Microsoft YaHei",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(900px 600px at 50% 26%, rgba(217,184,119,.09), transparent 62%),
+               linear-gradient(168deg,#151b36,#0d1124 58%,#090c1b);
+    background-attachment:fixed;color:var(--cream);font-family:var(--sans);min-height:100vh;
+  }
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(217,184,119,.12);
+    border-bottom:1px solid var(--line);text-align:center;font-size:12px;letter-spacing:1.5px;
+    color:var(--gold);padding:9px;backdrop-filter:blur(6px)}
+  .wrap{max-width:480px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;min-height:calc(100vh - 40px)}
+  .screen{display:none;flex:1;padding:30px 0 44px;flex-direction:column;justify-content:center}
+  .screen.active{display:flex}
+  #intro.active{justify-content:flex-start;padding-top:34px}
+  .center{text-align:center}
+  .moon{width:110px;height:110px;margin:0 auto 22px}
+  .moon svg{display:block}
+  .eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;text-transform:uppercase}
+  h1{font-family:var(--serif);font-size:33px;line-height:1.32;letter-spacing:.3px;margin-bottom:16px}
+  h1 .g{color:var(--gold)}
+  .sub{color:var(--muted);font-size:15px;line-height:1.85}
+  .cta{display:block;width:100%;padding:16px;border-radius:12px;border:1.5px solid var(--gold);
+       background:var(--gold);color:#1a1a26;font-size:15px;font-weight:700;letter-spacing:.5px;
+       cursor:pointer;margin-top:24px;font-family:var(--sans)}
+  .cta.ghost{background:transparent;color:var(--gold);margin-top:10px}
+  .cta:active{opacity:.85}
+  .foot{color:#6b6f85;font-size:12px;line-height:1.7;margin-top:18px;text-align:center}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:30px 0 8px;
+         border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
+  .stats div{text-align:center}
+  .stats b{display:block;font-family:var(--serif);font-size:19px;color:var(--gold)}
+  .stats span{font-size:10px;color:var(--muted);letter-spacing:.5px}
+
+  /* features */
+  .features{margin-top:26px;display:grid;gap:12px}
+  .feat{display:flex;gap:14px;align-items:flex-start;background:var(--card);
+        border:1px solid var(--line);border-radius:14px;padding:16px}
+  .feat .ic{font-size:20px;line-height:1;flex:0 0 auto;margin-top:2px}
+  .feat b{display:block;font-size:14px;margin-bottom:5px;color:var(--cream)}
+  .feat p{font-size:12.5px;line-height:1.65;color:var(--muted)}
+
+  /* types strip */
+  .types{margin-top:30px}
+  .types h2{font-family:var(--serif);font-size:18px;color:var(--cream);text-align:center;margin-bottom:14px}
+  .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .titem{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .titem b{color:var(--gold);font-weight:600}
+
+  /* quiz */
+  .qbar{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .bar{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;background:var(--gold);transition:.3s}
+  .step{font-size:12px;color:var(--muted)}
+  .back{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:var(--sans)}
+  .q{font-family:var(--serif);font-size:22px;line-height:1.6;margin:18px 0 30px;min-height:118px}
+  .opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;
+       padding:18px 20px;margin-bottom:14px;border-radius:12px;border:1px solid var(--line);
+       background:rgba(255,255,255,.03);color:var(--cream);font-size:15px;line-height:1.55;
+       cursor:pointer;font-family:var(--sans)}
+  .opt:hover{border-color:var(--gold);background:rgba(217,184,119,.08)}
+  .opt .k{color:var(--gold);font-weight:700;flex:0 0 auto}
+
+  /* result */
+  .group{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+  .tname{font-family:var(--serif);font-size:38px;letter-spacing:.5px;margin-bottom:6px}
+  .code{font-size:12px;letter-spacing:6px;color:var(--muted)}
+  .desc{font-size:15px;line-height:1.9;color:#cfd3e2;margin:20px 0;text-align:left}
+  .say{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:16px 0;text-align:left}
+  .say .who{font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;text-transform:uppercase}
+  .say p{font-family:var(--serif);font-size:15px;line-height:1.8;color:#e2e5f0}
+  .tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  .tag{font-size:11px;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+  /* naming */
+  .field{margin-bottom:16px;text-align:left}
+  .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:8px}
+  .input{width:100%;height:46px;border-radius:10px;border:1px solid var(--line);
+         background:rgba(255,255,255,.05);color:var(--cream);padding:0 14px;font-size:16px;font-family:var(--sans)}
+  .input:focus{outline:none;border-color:var(--gold)}
+  .seg{display:flex;gap:10px}
+  .seg button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);
+              background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;font-size:14px;font-family:var(--sans)}
+  .seg button.on{border-color:var(--gold);color:var(--gold);background:rgba(217,184,119,.1)}
+  .namelist{margin-top:20px}
+  .nameopt{padding:18px 20px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:rgba(255,255,255,.03)}
+  .nameopt .nm{font-family:var(--serif);font-size:26px;letter-spacing:2px;color:var(--cream)}
+  .nameopt .py{font-size:13px;color:var(--gold);letter-spacing:1px;margin:6px 0}
+  .nameopt .src{font-size:12px;color:var(--muted);line-height:1.6}
+
+  /* paywall */
+  .lock{position:relative;overflow:hidden;border-radius:14px;border:1px dashed var(--line);
+        padding:20px;margin-bottom:14px;background:rgba(255,255,255,.02);text-align:center}
+  .lock .blur{filter:blur(5px);opacity:.45;font-family:var(--serif);font-size:22px;color:var(--cream);letter-spacing:2px}
+  .lock .lockic{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px}
+  .pw{border:1px solid var(--gold);border-radius:18px;padding:24px 20px;margin-top:20px;text-align:center;
+      background:linear-gradient(165deg,rgba(217,184,119,.10),rgba(217,184,119,.02))}
+  .pw h3{font-family:var(--serif);font-size:21px;margin-bottom:6px}
+  .pw .price{font-family:var(--serif);font-size:34px;color:var(--gold);margin:10px 0 2px}
+  .pw .pnote{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .pw ul{list-style:none;text-align:left;margin:14px 0 4px;padding:0}
+  .pw li{font-size:13px;color:#cfd3e2;padding:6px 0 6px 22px;position:relative}
+  .pw li:before{content:"✓";position:absolute;left:0;color:var(--gold)}
+  .pw .demo{font-size:11px;color:#6b6f85;margin-top:12px}
+
+  /* moon card */
+  .cardwrap{display:flex;justify-content:center;padding:8px 0 20px}
+  .mcard{width:100%;max-width:360px;aspect-ratio:4/5;border-radius:20px;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,#1b2242,#0e1225 70%);border:1px solid rgba(217,184,119,.4);
+    box-shadow:0 24px 60px rgba(0,0,0,.5);padding:24px 20px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .mc-inner{position:absolute;inset:12px;border:1px solid rgba(217,184,119,.18);border-radius:14px;pointer-events:none}
+  .mc-phase{width:80px;height:80px;margin:2px 0 8px}
+  .mc-name{font-family:var(--serif);font-size:38px;letter-spacing:6px;color:var(--cream);line-height:1.2}
+  .mc-py{font-size:11px;letter-spacing:2px;color:var(--gold);margin-top:4px}
+  .mc-sig{font-family:var(--script);font-size:25px;color:var(--gold);transform:rotate(-5deg)}
+  .mc-div{width:52px;height:1px;background:rgba(217,184,119,.4);margin:10px 0}
+  .mc-type{font-size:11px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase}
+  .mc-dims{font-size:9.5px;color:var(--muted);margin-top:4px}
+  .mc-src{font-size:10.5px;line-height:1.55;color:#cfd3e2;margin-top:8px}
+  .mc-god{font-family:var(--serif);font-size:11.5px;line-height:1.6;color:#e2e5f0;margin-top:8px}
+  .mc-foot{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:space-between;
+           padding:0 24px;font-size:9.5px;letter-spacing:1.5px;color:rgba(217,184,119,.7)}
+</style>
 </head>
 <body>
-<header class="top">
-  <a class="brand" href="./"><span class="seal-dot">名</span> Mingzi</a>
-  <nav><a href="quiz.html">Moon Quiz</a> <a href="#tiers">Certificate</a> <a href="#faq">FAQ</a></nav>
-</header>
 
-<main>
-  <section class="hero-night">
-    <img class="hero-art" src="assets/wangshu-hero.jpg" alt="望舒, the Moon Maiden — an ink painting of a woman in moon-white hanfu holding a lantern beneath an arc of eight moon phases">
-    <div class="hero-copy">
-      <h1>Meet 望舒, the Moon&nbsp;Maiden.</h1>
-      <p class="hero-sub">In the old poems she drives the moon across the sky, and makes the night legible. Here she reads the lost and the curious — and gives each traveller a Chinese name that fits. Free forever.</p>
-      <div class="hero-ctas">
-        <a class="btn" href="quiz.html">Begin with the Moon Quiz · 3 min</a>
-        <a class="btn ghost-light" href="#generator">Or type your name →</a>
+<div class="topbar">Free · 5 min · No sign-up</div>
+
+<div class="wrap">
+
+  <!-- ===== 1. Landing ===== -->
+  <section class="screen active" id="intro">
+    <div class="center">
+      <div class="moon">
+        <svg viewBox="0 0 100 100" width="110" height="110">
+          <defs><mask id="m0"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="38" fill="white"/><circle cx="72" cy="50" r="38" fill="black"/></mask></defs>
+          <circle cx="50" cy="50" r="50" fill="none" stroke="rgba(217,184,119,.3)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="38" fill="#d9b877" mask="url(#m0)"/>
+        </svg>
+      </div>
+      <div class="eyebrow">Luna's Naming</div>
+      <h1>Discover the real you —<br><span class="g">and your Chinese name.</span></h1>
+      <p class="sub">Answer 32 thoughtful questions. Find your moon phase. Then Luna brews you a Chinese name — every name traced to a real classical source.</p>
+      <button class="cta" onclick="start()">Start the Test →</button>
+      <button class="cta ghost" onclick="scrollTypes()">Meet the 16 Types</button>
+    </div>
+
+    <div class="stats">
+      <div><b>32</b><span>QUESTIONS</span></div>
+      <div><b>16</b><span>TYPES</span></div>
+      <div><b>8</b><span>MOON PHASES</span></div>
+      <div><b>$0</b><span>TO START</span></div>
+    </div>
+
+    <div class="features">
+      <div class="feat"><div class="ic">📖</div><div><b>Real sources, always</b><p>Every name traces back to the Book of Songs, Songs of Chu, or Tang–Song poetry. We never make one up.</p></div></div>
+      <div class="feat"><div class="ic">🌙</div><div><b>A person, not a tool</b><p>Luna walks you through it — 16 types, 8 moon phases, and a name that actually fits you.</p></div></div>
+      <div class="feat"><div class="ic">🎴</div><div><b>Something to keep</b><p>You don't just get letters. You get a moon card — your name, your sign, your story.</p></div></div>
+      <div class="feat"><div class="ic">🔒</div><div><b>Private by design</b><p>Everything runs in your browser. No email, no sign-up, no tracking.</p></div></div>
+    </div>
+
+    <div class="types" id="types">
+      <h2>Meet the 16 types</h2>
+      <div class="tgrid">
+        <div class="titem"><b>The Strategist</b> INTJ</div><div class="titem"><b>The Sage</b> INTP</div>
+        <div class="titem"><b>The Commander</b> ENTJ</div><div class="titem"><b>The Debater</b> ENTP</div>
+        <div class="titem"><b>The Lamplighter</b> INFJ</div><div class="titem"><b>The Poet</b> INFP</div>
+        <div class="titem"><b>The Guide</b> ENFJ</div><div class="titem"><b>The Wanderer</b> ENFP</div>
+        <div class="titem"><b>The Keeper</b> ISTJ</div><div class="titem"><b>The Protector</b> ISFJ</div>
+        <div class="titem"><b>The Steward</b> ESTJ</div><div class="titem"><b>The Host</b> ESFJ</div>
+        <div class="titem"><b>The Artisan</b> ISTP</div><div class="titem"><b>The Painter</b> ISFP</div>
+        <div class="titem"><b>The Vanguard</b> ESTP</div><div class="titem"><b>The Performer</b> ESFP</div>
       </div>
     </div>
+
+    <p class="foot">A playful reference for self-reflection.<br>Not medical, psychological or financial advice.</p>
   </section>
 
-  <h2 class="doors-title">She offers four doors</h2>
-  <div class="doors">
-    <a class="door" href="#generator"><span class="dnum">门一</span><h3>The quick name</h3><p>Type your name. A real surname that echoes it, a meaningful given name — in seconds.</p></a>
-    <a class="door" href="zodiac.html"><span class="dnum">门二</span><h3>The way of the stars</h3><p>Your western sign × your Chinese animal — one name that carries both. No questions, just your birthday.</p></a>
-    <a class="door" href="quiz.html"><span class="dnum">门三</span><h3>The way of science</h3><p>A 16-question personality reading across the eight moon phases. Two names fit your nature — one balances it.</p></a>
-    <a class="door" href="mystic.html"><span class="dnum">门四</span><h3>The way of the elements</h3><p>The old path: wood, fire, earth, metal, water. A name that walks with your element — adds wings, not weight.</p></a>
-  </div>
-  <p class="sub doors-note">Whichever door you take: not a transliteration sticker — a proper name, checked against the cultural-safety list, free forever.</p>
-
-  <section id="generator" class="gen">
-    <h2 class="sect">门一 · The quick name</h2>
-    <div class="genrow">
-      <input id="nameInput" type="text" placeholder="Type your name — e.g. Emma, Liam, Yara" autocomplete="off" maxlength="24">
-      <button id="goBtn" class="btn">Reveal my name</button>
+  <!-- ===== 2. Quiz ===== -->
+  <section class="screen" id="quiz">
+    <div class="qbar">
+      <button class="back" onclick="back()">Back</button>
+      <div class="bar"><span id="fill"></span></div>
+      <span class="step" id="step"></span>
     </div>
-    <p class="genhint"><a href="quiz.html"><strong>Want a name that fits your soul?</strong> Take the Moon Maiden quiz — 16 questions, three names, free →</a></p>
-    <p class="genhint">Free, instant, no sign-up. The same name always gets the same Chinese name.</p>
+    <div class="q" id="qtext"></div>
+    <button class="opt" onclick="choose('a')"><span class="k">A</span><span id="optA"></span></button>
+    <button class="opt" onclick="choose('b')"><span class="k">B</span><span id="optB"></span></button>
+  </section>
 
-    <div id="result" class="result" hidden>
-      <p class="kicker" id="rKicker"></p>
-      <h2 class="bigname" id="rBig" lang="zh"></h2>
-      <p class="bigpy" id="rPy"></p>
-      <div class="charcards" id="rCards"></div>
-      <p class="why" id="rWhy"></p>
-      <p class="toneline" id="rTone"></p>
-      <p class="safety">✓ Checked against the cultural-safety list — nothing here sounds like an unlucky word, and every character belongs on a modern name.</p>
-      <div class="actions">
-        <button class="btn ghost" data-size="portrait">Share card · 4:5</button>
-        <button class="btn ghost" data-size="story">Story · 9:16</button>
-        <button class="btn ghost" data-size="header">Header · 3:1</button>
-        <a class="btn ghost" id="rPageLink" hidden>Open your page →</a>
+  <!-- ===== 3. Result ===== -->
+  <section class="screen" id="result">
+    <div class="center">
+      <div class="moon" style="width:140px;height:140px">
+        <svg viewBox="0 0 100 100" width="140" height="140">
+          <defs>
+            <mask id="m1"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="carve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG)" mask="url(#m1)"/>
+        </svg>
       </div>
-      <div class="upsell-mini">
-        <p>Keep it forever: the <strong>name certificate</strong> — signature, courtesy name, classical sources, seal artwork and pronunciation audio. <a href="#tiers">See the keepsakes →</a></p>
-      </div>
+      <div class="group" id="rgroup"></div>
+      <div class="tname" id="rname"></div>
+      <div class="code" id="rcode"></div>
     </div>
+    <p class="desc" id="rdesc"></p>
+    <div class="tags" id="rtags"></div>
+    <div class="say"><div><div class="who">Luna says</div><p id="rgod"></p></div></div>
+    <button class="cta" onclick="toNaming()">Let Luna brew your name →</button>
   </section>
 
-  <section class="how">
-    <div class="step"><span class="n">1</span><h3>A surname that sounds like you</h3><p>Chinese names start with a family name. Mingzi picks a classic surname from the same sound as your name — the way Chinese speakers actually name foreign friends.</p></div>
-    <div class="step"><span class="n">2</span><h3>A given name with meaning</h3><p>Two characters, chosen from a curated pool: real given-name characters, matched to your gender, with meanings that read like a small blessing.</p></div>
-    <div class="step"><span class="n">3</span><h3>Checked before you meet anyone</h3><p>Tone flow, rhythm, and a cultural-safety scan: nothing that sounds like death, illness or bad luck. The name you get is one you can say with confidence.</p></div>
-  </section>
-
-  <section id="tiers" class="tiers">
-    <h2>Free gets you the name. Keepsakes get you the rest.</h2>
-    <div class="tier-row">
-      <div class="tier">
-        <h3>Signature + meaning</h3>
-        <p class="price">$9.9</p>
-        <p>Your Chinese name as a designed signature card, plus a full meaning sheet — every character explained, with pronunciation.</p>
-        <a class="btn js-store" href="#">Get the signature card</a>
-      </div>
-      <div class="tier featured">
-        <h3>Name certificate</h3>
-        <p class="price">$24.9</p>
-        <p>The full keepsake: signature card, your personal courtesy name (表字) in the classical style, sources from Shuowen and the classics, seal artwork, pronunciation audio — on a print-ready certificate.</p>
-        <a class="btn js-store" href="#">Get the certificate</a>
-      </div>
-      <div class="tier">
-        <h3>Human-reviewed</h3>
-        <p class="price">$49.9</p>
-        <p>Everything in the certificate, re-checked line by line by a native reader, with one round of changes. Limited slots each week.</p>
-        <a class="btn js-store" href="#">Book a review</a>
+  <!-- ===== 4. Naming ===== -->
+  <section class="screen" id="naming">
+    <div class="center" style="margin-bottom:20px">
+      <div class="eyebrow">Step 2 · Naming</div>
+      <h1 style="font-size:25px;margin-bottom:8px">What's your first name?</h1>
+      <p class="sub" style="font-size:14px">Luna will brew a Chinese name to match who you are.</p>
+    </div>
+    <div class="field">
+      <label>Your English name (optional — used for sound)</label>
+      <input class="input" id="enname" placeholder="e.g. Emma" />
+    </div>
+    <div class="field">
+      <label>Vibe</label>
+      <div class="seg">
+        <button id="segF" onclick="setG('F')">Soft</button>
+        <button id="segM" class="on" onclick="setG('M')">Strong</button>
       </div>
     </div>
+    <button class="cta" onclick="generate()">Brew my name</button>
+    <div class="namelist" id="namelist"></div>
+    <div id="pwArea"></div>
+    <p class="foot" id="namingFoot" style="display:none">Every name comes with a real source from the Book of Songs, Songs of Chu, or Tang–Song poetry.</p>
   </section>
 
-  <section id="waitlist" class="waitlist">
-    <h2>Not ready yet?</h2>
-    <p>Leave your email and we'll send you the certificate the day the shop opens — plus one short letter on how a Chinese name really works.</p>
-    <form id="wlForm" class="wlrow" method="POST" action="https://formsubmit.co/purecafe2016@163.com">
-      <input type="hidden" name="_subject" value="Mingzi waitlist signup">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://879879.xyz/?subscribed=1">
-      <input type="email" name="email" placeholder="you@example.com" required>
-      <button class="btn" type="submit">Notify me</button>
-    </form>
-    <p class="genhint" id="wlNote"></p>
+  <!-- ===== 5. Moon card ===== -->
+  <section class="screen" id="cardScreen">
+    <div class="center" style="margin-bottom:14px">
+      <div class="eyebrow">Your moon card</div>
+    </div>
+    <div class="cardwrap">
+      <div class="mcard"><div class="mc-inner"></div>
+        <svg class="mc-phase" viewBox="0 0 100 100">
+          <defs>
+            <mask id="m2"><rect width="100" height="100" fill="black"/><circle cx="50" cy="50" r="46" fill="white"/><circle id="ccarve" cx="50" cy="50" r="46" fill="black"/></mask>
+            <radialGradient id="litG2" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#fff8ea"/><stop offset="52%" stop-color="#f2d79f"/><stop offset="100%" stop-color="#d9b877"/></radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" fill="#1c2444" stroke="rgba(217,184,119,.35)" stroke-width="0.6"/>
+          <circle cx="50" cy="50" r="46" fill="url(#litG2)" mask="url(#m2)"/>
+        </svg>
+        <div class="mc-name" id="cName"></div>
+        <div class="mc-py" id="cPy"></div>
+        <div class="mc-sig" id="cSig"></div>
+        <div class="mc-div"></div>
+        <div class="mc-type" id="cType"></div>
+        <div class="mc-dims" id="cDims"></div>
+        <div class="mc-src" id="cSrc"></div>
+        <div class="mc-god" id="cGod"></div>
+        <div class="mc-foot"><span id="cNo"></span><span>Luna</span></div>
+      </div>
+    </div>
+    <button class="cta" onclick="savePNG()">⬇ Save card (PNG)</button>
+    <button class="cta ghost" onclick="toNaming()">Brew another name</button>
+    <button class="cta ghost" onclick="restart()">Take the test again</button>
+    <p class="foot">If the download fails, a screenshot works too.</p>
   </section>
 
-  <section id="faq" class="faq">
-    <h2>Questions, answered honestly</h2>
-    <details><summary>Is this a real Chinese name, or a gimmick?</summary><p>A real name, built the way Chinese speakers build one: surname first, meaningful given characters after. It is not an official document — for passports or visas you still use your legal name — but for daily life, teachers, colleagues and seals, this is a name you can actually use.</p></details>
-    <details><summary>Can I pick a different name if I don't like it?</summary><p>Yes — try variants of your name (full name, nickname, middle name); each gets its own result. The paid certificate includes a round of adjustments with a native reader.</p></details>
-    <details><summary>Is it safe to get it tattooed?</summary><p>Every result passes an automated cultural-safety scan (no unlucky homophones, no dated characters). For a permanent tattoo, the certificate's tattoo sheet shows stroke-by-stroke layout you can hand to your artist — worth the few dollars before something permanent.</p></details>
-    <details><summary>Why is the name free?</summary><p>Because the name should be given, not sold. Mingzi charges only for the handmade keepsakes around it — calligraphy, seals, certificates — the way a calligrapher would.</p></details>
-    <details><summary>How do I pronounce it?</summary><p>Each character shows pinyin with tone numbers. The paid certificate adds audio recorded at natural speed, plus tone-flow tips so it sounds like a name, not a vocabulary drill.</p></details>
-  </section>
-</main>
+</div>
 
-<footer class="foot">
-  <p>Mingzi — your name, in real Chinese. Free forever for the name; pay only for the keepsakes.</p>
-  <p><a href="index.html#generator">Generator</a> · <a href="quiz.html">Moon Quiz</a> · <a href="zodiac.html">Star × Zodiac</a> · <a href="mystic.html">Five Natures</a> · <a href="index.html#tiers">Certificate</a> · <a href="index.html#faq">FAQ</a></p>
-</footer>
+<script>
+/* ===== 32 questions ===== */
+const BANK={
+ EI:[
+  {q:"On a weekend night, you'd rather —",a:["Grab friends and go out","E"],b:["Stay in your own little world","I"]},
+  {q:"When you're upset, you usually —",a:["Talk to someone — saying it helps","E"],b:["Process it alone; don't trouble others","I"]},
+  {q:"In an unfamiliar room, you —",a:["Go introduce yourself","E"],b:["Watch quietly until others come to you","I"]},
+  {q:"After a long day, what recharges you is —",a:["Chatting and being around people","E"],b:["Some time alone, seeing no one","I"]},
+  {q:"In a group conversation, you're usually —",a:["The one who talks","E"],b:["The one who listens","I"]},
+  {q:"When a new idea hits you —",a:["You say it out loud, thinking as you go","E"],b:["You run it through your head first","I"]},
+  {q:"Your phone buzzes —",a:["I want to check right away","E"],b:["No rush, I'll look later","I"]},
+  {q:"A whole day of social plans makes you —",a:["Excited — the more the better","E"],b:["A bit tired; I hope for some solo time","I"]}
+ ],
+ SN:[
+  {q:"Faced with something “almost impossible” that you really want —",a:["Try first; what if it works","N"],b:["Weigh the cost before moving","S"]},
+  {q:"When judging, you trust more —",a:["That vague gut feeling","N"],b:["The facts and numbers in front of you","S"]},
+  {q:"Talk turns to “the future”, and you —",a:["Dream far ahead","N"],b:["Focus on the next step","S"]},
+  {q:"In a film, you care more about —",a:["What it's trying to say","N"],b:["Whether the story and detail ring true","S"]},
+  {q:"Describing something, you tend to —",a:["Say what it's “like”, use a metaphor","N"],b:["Explain the process concretely","S"]},
+  {q:"A new thing is put before you —",a:["You first think what else it could do","N"],b:["You first see how it works now","S"]},
+  {q:"The chat you prefer —",a:["Ideas and possibilities","N"],b:["Concrete things and experience","S"]},
+  {q:"When you plan —",a:["Big direction first, details later","N"],b:["Steps laid out first","S"]}
+ ],
+ TF:[
+  {q:"A friend calls at midnight, hurting —",a:["Stay with them till they finish","F"],b:["Comfort briefly, save tomorrow's you","T"]},
+  {q:"Someone is being bullied —",a:["I'd step in, even at a cost","F"],b:["Stand back; don't get dragged in","T"]},
+  {q:"When good things are shared out —",a:["I think whether others have enough","F"],b:["I make sure I don't lose out","T"]},
+  {q:"When deciding, you weigh more —",a:["Whether it's fair and kind","F"],b:["Whether it's logical and efficient","T"]},
+  {q:"Someone criticizes you to your face —",a:["I feel hurt first","F"],b:["I first judge if they're right","T"]},
+  {q:"What moves you more —",a:["A sincere story","F"],b:["A beautiful argument","T"]},
+  {q:"Helping someone choose, you —",a:["Think how they'll feel","F"],b:["Think which option works best","T"]},
+  {q:"In a quarrel, you're more like —",a:["The one who calms and cares for both","F"],b:["The one who says who's right","T"]}
+ ],
+ JP:[
+  {q:"Before a trip —",a:["Plan the itinerary clearly","J"],b:["Rough direction, improvise on the way","P"]},
+  {q:"Something left unfinished —",a:["I can't let it go till it's done","J"],b:["I can leave it for later","P"]},
+  {q:"Your desk or room is mostly —",a:["Everything in its place","J"],b:["A bit messy, but I know where things are","P"]},
+  {q:"Facing a deadline —",a:["I start long before","J"],b:["I often push it close","P"]},
+  {q:"When plans are disrupted —",a:["I'm annoyed; I want to fix it back","J"],b:["Fine — maybe even more fun","P"]},
+  {q:"When deciding —",a:["Decide fast; then I can relax","J"],b:["Leave it open for something better","P"]},
+  {q:"You prefer —",a:["Plans agreed in advance","J"],b:["Room for “we'll see”","P"]},
+  {q:"Someone invites you last-minute —",a:["I'd prefer a heads-up","J"],b:["Anytime — let's go","P"]}
+ ]
+};
+const QUESTIONS=[];
+for(let i=0;i<8;i++){['EI','SN','TF','JP'].forEach(d=>{const it=BANK[d][i];QUESTIONS.push({dim:d,q:it.q,a:{t:it.a[0],v:it.a[1]},b:{t:it.b[0],v:it.b[1]}});});}
+const DIMWORD={E:"Extrovert",I:"Introvert",S:"Sensing",N:"Intuition",T:"Thinking",F:"Feeling",J:"Judging",P:"Perceiving"};
+const CARVE={"new":50,"waxing-crescent":27,"first-quarter":4,"waxing-gibbous":-22,"full":-300,
+             "waning-gibbous":122,"last-quarter":96,"waning-crescent":73};
 
-<script src="site-config.js"></script>
-<script src="assets/app.js"></script>
+const TYPES={
+ INTJ:{group:"Strategists · NT",name:"The Strategist",ph:"new",desc:"You see the whole board from a distance — further than most. You like turning chaos into order and blur into clarity. People think you're cold; really, you've just thought it all through in advance.",god:"You see so far ahead. Don't forget the moonlight right under your feet."},
+ INTP:{group:"Strategists · NT",name:"The Sage",ph:"new",desc:"You're endlessly curious about “why”. You don't care for surface noise — only the principle underneath. Your world is vast, and it lives almost entirely inside your head.",god:"There's a whole sky in your head — tonight, come out and breathe."},
+ ENTJ:{group:"Strategists · NT",name:"The Commander",ph:"waxing-gibbous",desc:"You've always known which way to go — and you dare to lead a whole group there. Decisive, direct, no dragging.",god:"You lead so many forward — leave yourself a place to rest, too."},
+ ENTP:{group:"Strategists · NT",name:"The Debater",ph:"waxing-gibbous",desc:"You love challenging every “of course”. Your mind races, and you always spot the angle nobody considered.",god:"You've questioned the whole world — some answers, the moon gives slowly."},
+ INFJ:{group:"Idealists · NF",name:"The Lamplighter",ph:"waning-gibbous",desc:"You're quiet, yet you see straight into people's hearts. You're always lighting lamps for others, and rarely speak of your own dark.",god:"You've held the lamp for so many — tonight, let me light you."},
+ INFP:{group:"Idealists · NF",name:"The Poet",ph:"waning-gibbous",desc:"Another world lives in your heart — soft, vast, unwilling to compromise. You never cared about winning; you cared whether it's true.",god:"You kept that world inside you — when you're tired, rest here with me."},
+ ENFJ:{group:"Idealists · NF",name:"The Guide",ph:"full",desc:"You're born to ignite others. You gather people and make every one of them feel seen.",god:"You've lit up so many — let me light you, too."},
+ ENFP:{group:"Idealists · NF",name:"The Wanderer",ph:"full",desc:"Warm, free, always with tears in your eyes for the world. Wherever you go, you bring light.",god:"You run so fast and so bright — sometimes, stop and look at the moon."},
+ ISTJ:{group:"Guardians · SJ",name:"The Keeper",ph:"waning-crescent",desc:"So dependable it puts people at ease. What you promised, you deliver; the rules you keep without fail.",god:"You've kept every promise — tonight, do nothing; I'm here."},
+ ISFJ:{group:"Guardians · SJ",name:"The Protector",ph:"last-quarter",desc:"You quietly carry a lot and rarely say you're tired. You remember everyone's preferences and tend to everyone's feelings.",god:"You've cared for everyone — don't forget, you deserve care too."},
+ ESTJ:{group:"Guardians · SJ",name:"The Steward",ph:"waxing-crescent",desc:"With you around, nothing falls apart. Practical, decisive — born to set rules and hold the ground.",god:"You've held up so many scenes — tonight, let me hold it for you."},
+ ESFJ:{group:"Guardians · SJ",name:"The Host",ph:"first-quarter",desc:"You make everyone feel welcome and looked after. Your warmth isn't loud, but it's warm.",god:"You've taken care of everyone — let me take care of you."},
+ ISTP:{group:"Explorers · SP",name:"The Artisan",ph:"waning-crescent",desc:"You don't talk much, but you can fix and make anything. You solve with your hands, not words.",god:"You're always fixing, always solving — tonight, put the tools down."},
+ ISFP:{group:"Explorers · SP",name:"The Painter",ph:"last-quarter",desc:"Quiet and easygoing, yet sharp about beauty and feeling. You live in the moment, and make it beautiful.",god:"You've turned your days into a painting — leave one blank square for you."},
+ ESTP:{group:"Explorers · SP",name:"The Vanguard",ph:"waxing-crescent",desc:"You dive in first. Curious about the world, action always outrunning hesitation.",god:"You charge so fast — sometimes, stop and look at the moon behind you."},
+ ESFP:{group:"Explorers · SP",name:"The Performer",ph:"first-quarter",desc:"Wherever you go is a stage. Warm and sincere, you make people laugh without trying.",god:"You gave your joy to everyone — tonight, keep a little for yourself."}
+};
+
+/* ===== names (4 groups, real sources) ===== */
+const SURNAMES=["Chen","Lin","Su","Shen","Gu","Lu","Jiang","Xu","Song","Wen","Ye","Bai","Cheng","Xiao","Yu","Zhong","Ji","Wen","Li","Xie"];
+const NAMES={
+ NT:[
+  {n:"睿",py:"rui4",m:"wise, far-sighted",s:"Shuowen Jiezi: Rui - deep clarity, insight."},
+  {n:"修远",py:"xiu1 yuan3",m:"a long road, endless seeking",s:"Li Sao: The road ahead is long; I will search high and low."},
+  {n:"景行",py:"jing3 xing2",m:"the bright high road",s:"Book of Songs: I look up to the high mountain, and walk the bright road."},
+  {n:"如琢",py:"ru2 zhuo2",m:"carved and polished",s:"Book of Songs: As cut, as filed; as carved, as polished."},
+  {n:"维新",py:"wei2 xin1",m:"ever-renewing",s:"Book of Songs: Though an old land, its mandate is new."},
+  {n:"明哲",py:"ming2 zhe2",m:"bright and wise",s:"Book of Songs: Bright and wise, to keep oneself whole."},
+  {n:"博学",py:"bo2 xue2",m:"broad learning",s:"The Mean: Learn broadly; inquire carefully; think prudently."},
+  {n:"慎思",py:"shen4 si1",m:"prudent thinking",s:"The Mean: Think prudently; discern clearly; act earnestly."},
+  {n:"明辨",py:"ming2 bian4",m:"clear discernment",s:"The Mean: Discern clearly; act earnestly."},
+  {n:"笃行",py:"du3 xing2",m:"earnest practice",s:"The Mean: Act earnestly."},
+  {n:"弘毅",py:"hong2 yi4",m:"broad and resolute",s:"Analects: A scholar must be broad-minded and resolute."},
+  {n:"道远",py:"dao4 yuan3",m:"a long road ahead",s:"Analects: His burden is heavy and his road is long."},
+  {n:"知新",py:"zhi1 xin1",m:"learning anew",s:"Analects: Review the old to learn the new."},
+  {n:"思齐",py:"si1 qi2",m:"emulating the worthy",s:"Analects: When you see a worthy person, think of equalling them."},
+  {n:"自强",py:"zi4 qiang2",m:"self-strengthening",s:"I Ching: As heaven moves with vigour, the gentleman strives without ceasing."},
+  {n:"行健",py:"xing2 jian4",m:"vigorous action",s:"I Ching: As heaven moves with vigour."},
+  {n:"谦益",py:"qian1 yi4",m:"humility brings gain",s:"Book of Documents: Complacency brings loss; humility brings benefit."},
+  {n:"兼济",py:"jian1 ji4",m:"helping all in reach",s:"Mencius: In success, help the world."},
+  {n:"如圭",py:"ru2 gui1",m:"like a jade tablet - noble",s:"Book of Songs: Like gold, like tin; like a jade tablet, like a jade disc."},
+  {n:"攻玉",py:"gong1 yu4",m:"polishing jade - refining self",s:"Book of Songs: A stone from another hill can polish jade."},
+ ],
+ NF:[
+  {n:"兰",py:"lan2",m:"orchid - pure, fragrant",s:"Nine Songs: Yuan has its angelica, Li its orchid."},
+  {n:"芷",py:"zhi3",m:"angelica - clean fragrance",s:"Nine Songs: Yuan has its angelica, Li its orchid."},
+  {n:"清",py:"qing1",m:"clear and upright",s:"The Fisherman: When the water is clear, I wash my cap."},
+  {n:"明月",py:"ming2 yue4",m:"the bright moon",s:"Zhang Jiuling: A bright moon rises over the sea."},
+  {n:"云起",py:"yun2 qi3",m:"clouds rising - at ease",s:"Wang Wei: Sit and watch the clouds rise."},
+  {n:"子衿",py:"zi3 jin1",m:"the scholar's collar - refined",s:"Book of Songs: Blue, blue is your collar."},
+  {n:"蒹葭",py:"jian1 jia1",m:"the reeds - wistful",s:"Book of Songs: The reeds grow green; white dew turns to frost."},
+  {n:"春晓",py:"chun1 xiao3",m:"a spring dawn",s:"Meng Haoran: In spring one sleeps, unaware of dawn."},
+  {n:"采薇",py:"cai3 wei1",m:"gathering violets",s:"Book of Songs: Long ago, when we set out, the willows were tender."},
+  {n:"依依",py:"yi1 yi1",m:"lingering, tender",s:"Book of Songs: The willows were tender."},
+  {n:"琴瑟",py:"qin2 se4",m:"lute and zither - harmony",s:"Book of Songs: Lute and zither, in harmony."},
+  {n:"静好",py:"jing4 hao3",m:"quiet and good",s:"Book of Songs: All is quiet and good."},
+  {n:"悠悠",py:"you1 you1",m:"long, lingering",s:"Book of Songs: Long, long my longing."},
+  {n:"婉如",py:"wan3 ru2",m:"gentle and graceful",s:"Book of Songs: There is a beauty, gentle and clear."},
+  {n:"清扬",py:"qing1 yang2",m:"clear and bright",s:"Book of Songs: Gentle and clear."},
+  {n:"轻舟",py:"qing1 zhou1",m:"a light boat - free",s:"Li Bai: The light boat has passed ten thousand mountains."},
+  {n:"疏影",py:"shu1 ying3",m:"sparse shadows - subtle beauty",s:"Lin Bu: Sparse shadows slant across the clear shallow water."},
+  {n:"暗香",py:"an4 xiang1",m:"hidden fragrance",s:"Lin Bu: A hidden fragrance floats in the dusk."},
+  {n:"若邻",py:"ruo4 lin2",m:"as a neighbour - close at heart",s:"Wang Bo: A friend near is like a neighbour, though worlds apart."},
+  {n:"呦呦",py:"you1 you1",m:"the deer's call - joyful",s:"Book of Songs: Yoo-yoo, cries the deer."},
+ ],
+ SJ:[
+  {n:"恒",py:"heng2",m:"lasting, constant",s:"Book of Songs: Like the moon's constancy, like the sun's rising."},
+  {n:"淑",py:"shu1",m:"gentle and good",s:"Book of Songs: A modest, gentle lady."},
+  {n:"坦",py:"tan3",m:"open and calm",s:"Analects: The gentleman is open and at ease."},
+  {n:"清泉",py:"qing1 quan2",m:"clear spring",s:"Wang Wei: Clear spring flows over the stones."},
+  {n:"白露",py:"bai2 lu4",m:"white dew - crisp autumn",s:"Book of Songs: White dew turns to frost."},
+  {n:"安",py:"an1",m:"peaceful, grounded",s:"Book of Songs: Chaos is settled; all is peaceful."},
+  {n:"静女",py:"jing4 nv3",m:"the quiet maiden",s:"Book of Songs: The quiet maiden is lovely."},
+  {n:"其姝",py:"qi2 shu1",m:"so lovely",s:"Book of Songs: The quiet maiden is lovely."},
+  {n:"温良",py:"wen1 liang2",m:"warm and kind",s:"Analects: Gentle, kind, courteous and yielding."},
+  {n:"宁",py:"ning2",m:"tranquil",s:"Book of Songs: All is peaceful and tranquil."},
+  {n:"守拙",py:"shou3 zhuo1",m:"keeping to simplicity",s:"Tao Yuanming: Returning to simplicity, I go back to the fields."},
+  {n:"悠然",py:"you1 ran2",m:"unhurried",s:"Tao Yuanming: I see the south hills, unhurried."},
+  {n:"知足",py:"zhi1 zu2",m:"contentment",s:"Laozi: One who knows contentment is rich."},
+  {n:"抱朴",py:"bao4 pu3",m:"embracing simplicity",s:"Laozi: Show plainness, embrace simplicity."},
+  {n:"见素",py:"jian4 su4",m:"showing purity",s:"Laozi: Show plainness, embrace simplicity."},
+  {n:"温故",py:"wen1 gu4",m:"reviewing the old",s:"Analects: Review the old to learn the new."},
+  {n:"慎独",py:"shen4 du2",m:"watchful even alone",s:"Book of Rites: The gentleman is watchful even when alone."},
+  {n:"乐群",py:"le4 qun2",m:"enjoying good company",s:"Book of Rites: Diligent in study, joyful in company."},
+  {n:"敬业",py:"jing4 ye4",m:"devoted to one's work",s:"Book of Rites: Diligent in study, joyful in company."},
+  {n:"素心",py:"su4 xin1",m:"a simple, honest heart",s:"Tao Yuanming: I hear there are many simple-hearted people."},
+ ],
+ SP:[
+  {n:"川",py:"chuan1",m:"river - ever-flowing",s:"Analects: It flows on, day and night."},
+  {n:"行",py:"xing2",m:"to walk, to act",s:"Book of Songs: Walk the bright road."},
+  {n:"苍苍",py:"cang1 cang1",m:"vast and green",s:"Book of Songs: The reeds grow green."},
+  {n:"长风",py:"chang2 feng1",m:"the long wind - sailing far",s:"Li Bai: Ride the long wind and break the waves."},
+  {n:"千帆",py:"qian1 fan1",m:"a thousand sails",s:"Liu Yuxi: A thousand sails pass the sunken boat."},
+  {n:"无晴",py:"wu2 qing2",m:"no storm, no glare - calm",s:"Su Shi: Neither wind nor rain nor clear sky."},
+  {n:"直挂",py:"zhi2 gua4",m:"hoisting straight",s:"Li Bai: Hoist the cloud-sail straight across the sea."},
+  {n:"云帆",py:"yun2 fan1",m:"cloud-sail",s:"Li Bai: Hoist the cloud-sail straight across the sea."},
+  {n:"破浪",py:"po4 lang4",m:"breaking the waves",s:"Li Bai: There will be a time to ride the long wind and break the waves."},
+  {n:"千里",py:"qian1 li3",m:"a thousand li - far",s:"Xunzi: Without small steps, one cannot go a thousand li."},
+  {n:"行行",py:"xing2 xing2",m:"on and on",s:"Nineteen Old Poems: On and on, ever on the road."},
+  {n:"快哉",py:"kuai4 zai1",m:"how fine!",s:"Su Shi: A thousand li of fine wind."},
+  {n:"浩然",py:"hao4 ran2",m:"vast and noble",s:"Mencius: I am good at nourishing my vast noble spirit."},
+  {n:"乘风",py:"cheng2 feng1",m:"riding the wind",s:"Su Shi: I wish to ride the wind home."},
+  {n:"东篱",py:"dong1 li2",m:"the east hedge",s:"Tao Yuanming: Picking chrysanthemums by the east hedge."},
+  {n:"星野",py:"xing1 ye3",m:"stars and the wide plain",s:"Du Fu: Stars hang low over the wide plain."},
+  {n:"平野",py:"ping2 ye3",m:"the wide plain",s:"Du Fu: Stars hang low over the wide plain."},
+  {n:"逍遥",py:"xiao1 yao2",m:"free and easy",s:"Zhuangzi: Free and easy wandering."},
+  {n:"扶摇",py:"fu2 yao2",m:"soaring upward",s:"Zhuangzi: Whirls up on a whirlwind ninety thousand li."},
+  {n:"明德",py:"ming2 de2",m:"bright virtue",s:"The Great Learning: The way lies in brightening bright virtue."},
+ ],
+};
+
+const PRICE="$4.99";
+
+let idx=0, log=[], code=null, curType=null, curGroup=null, gender='M', unlocked=false, freeName=null, altNames=[];
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); window.scrollTo(0,0);}
+function scrollTypes(){document.getElementById('types').scrollIntoView({behavior:'smooth'});}
+
+function start(){idx=0;log=[];render();show('quiz');}
+function back(){if(idx>0){idx--;log.pop();render();}else{show('intro');}}
+function render(){
+  const q=QUESTIONS[idx];
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('optA').textContent=q.a.t;
+  document.getElementById('optB').textContent=q.b.t;
+  document.getElementById('step').textContent=(idx+1)+' / '+QUESTIONS.length;
+  document.getElementById('fill').style.width=(idx/QUESTIONS.length*100)+'%';
+}
+function choose(k){
+  const q=QUESTIONS[idx];log.push({dim:q.dim,v:k==='a'?q.a.v:q.b.v});idx++;
+  if(idx<QUESTIONS.length){render();}else{document.getElementById('fill').style.width='100%';finish();}
+}
+function score(){
+  const c={},last={};
+  log.forEach(o=>{c[o.v]=(c[o.v]||0)+1;last[o.dim]=o.v;});
+  const pick=(a,b,dim)=>((c[a]||0)>(c[b]||0))?a:((c[b]||0)>(c[a]||0))?b:(last[dim]||a);
+  return pick('E','I','EI')+pick('S','N','SN')+pick('T','F','TF')+pick('J','P','JP');
+}
+function finish(){
+  code=score();curType=TYPES[code];
+  curGroup = code.includes('N') ? (code.includes('T')?'NT':'NF') : (code.includes('T')?'SP':'SJ');
+  document.getElementById('carve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('rgroup').textContent=curType.group;
+  document.getElementById('rname').textContent=curType.name;
+  document.getElementById('rcode').textContent=code.split('').join(' ');
+  document.getElementById('rdesc').textContent=curType.desc;
+  document.getElementById('rgod').textContent='“'+curType.god+'”';
+  document.getElementById('rtags').innerHTML=code.split('').map(x=>'<span class="tag">'+DIMWORD[x]+'</span>').join('');
+  show('result');
+}
+function pick(arr,n){const a=arr.slice();const out=[];
+  while(a.length && out.length<n){out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);} return out;}
+function escc(o){return JSON.stringify(o).replace(/'/g,"&#39;");}
+
+function toNaming(){
+  if(!code){show('intro');return;}
+  unlocked=false;
+  document.getElementById('namelist').innerHTML='';
+  document.getElementById('pwArea').innerHTML='';
+  document.getElementById('namingFoot').style.display='none';
+  show('naming');
+}
+function setG(g){gender=g;
+  document.getElementById('segM').classList.toggle('on', g==='M');
+  document.getElementById('segF').classList.toggle('on', g==='F');}
+function generate(){
+  const pool=NAMES[curGroup]||NAMES.NF;
+  const picks=pick(pool,3);
+  freeName=picks[0]; altNames=[picks[1],picks[2]];
+  document.getElementById('namelist').innerHTML=`
+    <div class="nameopt">
+      <div class="nm">${freeName.n}</div>
+      <div class="py">${freeName.py} · ${freeName.m}</div>
+      <div class="src">${freeName.s}</div>
+    </div>`;
+  document.getElementById('namingFoot').style.display='block';
+  renderPaywall();
+}
+function renderPaywall(){
+  document.getElementById('pwArea').innerHTML=`
+    <div class="lock"><div class="blur">${altNames[0].n} · ${altNames[1].n}</div><div class="lockic">🔒</div></div>
+    <div class="pw">
+      <h3>Unlock your moon card</h3>
+      <div class="price">${PRICE}</div>
+      <div class="pnote">One-time · no account needed</div>
+      <ul>
+        <li>All <b>3</b> name options (you're seeing 1)</li>
+        <li>Your <b>moon card</b> — name, signature &amp; source</li>
+        <li><b>High-res</b> PNG + printable PDF</li>
+        <li>Phone <b>wallpaper</b> version</li>
+      </ul>
+      <button class="cta" onclick="unlock()">Unlock — ${PRICE}</button>
+      <div class="demo">Demo build · payment not connected yet</div>
+    </div>`;
+}
+function unlock(){
+  unlocked=true;
+  document.getElementById('pwArea').innerHTML=`
+    <div class="nameopt">
+      <div class="nm">${altNames[0].n}</div>
+      <div class="py">${altNames[0].py} · ${altNames[0].m}</div>
+      <div class="src">${altNames[0].s}</div>
+    </div>
+    <div class="nameopt">
+      <div class="nm">${altNames[1].n}</div>
+      <div class="py">${altNames[1].py} · ${altNames[1].m}</div>
+      <div class="src">${altNames[1].s}</div>
+    </div>
+    <button class="cta" onclick="showCard(freeName)">Generate my moon card →</button>`;
+}
+function showCard(p){
+  const surname=SURNAMES[Math.floor(Math.random()*SURNAMES.length)];
+  const full=surname+p.n;
+  document.getElementById('ccarve').setAttribute('cx',CARVE[curType.ph]);
+  document.getElementById('cName').textContent=full;
+  document.getElementById('cPy').textContent=p.py.toUpperCase();
+  document.getElementById('cSig').textContent=full;
+  document.getElementById('cType').textContent='Character · '+curType.name+'  '+code.split('').join(' ');
+  document.getElementById('cDims').textContent=code.split('').map(x=>DIMWORD[x]).join(' · ');
+  document.getElementById('cSrc').textContent='“'+p.n+'” — '+p.m+'. '+p.s;
+  document.getElementById('cGod').textContent='“'+curType.god+'”';
+  document.getElementById('cNo').textContent='No.'+String(Math.floor(Math.random()*9000+1000));
+  show('cardScreen');
+}
+function restart(){code=null;curType=null;unlocked=false;show('intro');}
+function savePNG(){
+  try{
+    var card=document.querySelector('.mcard');
+    var css=document.querySelector('style').textContent;
+    var w=card.offsetWidth,h=card.offsetHeight,S=3;
+    var clone=card.cloneNode(true);
+    clone.style.width=w+'px';clone.style.height=h+'px';clone.style.margin='0';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+(w*S)+'" height="'+(h*S)+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="transform:scale('+S+');transform-origin:top left"><style>'+css+'</style><div style="background:#0d1124;width:'+w+'px;height:'+h+'px">'+clone.outerHTML+'</div></div></foreignObject></svg>';
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement('canvas');c.width=w*S;c.height=h*S;
+      c.getContext('2d').drawImage(img,0,0);
+      c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='moon-card.png';a.click();});
+    };
+    img.onerror=function(){alert('Export not supported in this browser — please screenshot instead.');};
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  }catch(e){alert('Export failed — please screenshot the card.');}
+}
+</script>
 </body>
 </html>
