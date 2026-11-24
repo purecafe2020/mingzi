@@ -5,6 +5,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 ---
 
+## [2.2.2] — 2026-11-24
+
+### Changed
+- Paywall prices synced with store pricing: EN $9.90 (was $4.99), zh-Hant NT$300 (was NT$150), zh-Hans ¥58 (was ¥29), ja ¥1,200 (was ¥600).
+- Added a minimal footer with the Ko-fi link (ko-fi.com/purecafe) on all four language pages.
+
+---
+
 ## [2.2.1] — 2026-11-23
 
 ### Removed
