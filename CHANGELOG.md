@@ -5,6 +5,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 ---
 
+## [2.2.3] — 2026-11-27
+
+### Added
+- AdSense verification: `adsbygoogle.js` head snippet (ca-pub-6619574927387223) on all 515 HTML pages (v2 root + v1 archive).
+- `ads.txt` at the site root: `google.com, pub-6619574927387223, DIRECT, f08c47fec0942fa0`.
+
+---
+
 ## [2.2.2] — 2026-11-24
 
 ### Changed
